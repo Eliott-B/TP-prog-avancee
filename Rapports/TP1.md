@@ -5,3 +5,5 @@
 
 ## Conception
 
+![Diagramme de classes](./assets/mobile.jpg)  
+**Figure 1** : Diagramme de classes  
