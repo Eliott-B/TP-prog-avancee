@@ -29,3 +29,8 @@ laTache.start();
 ```
 
 Pour lancer un thread, il faut l'instancier avec un objet `Runnable` et appeler ensuite la méthode `start`.
+
+## Modification du comportement du mobile
+
+Pour modifier le comportement du mobile, il faut bien modifier la méthode `run` de la classe `UnMobile`.  
+C'est cette méthode qui est appelée lorsqu'on lance le thread et qui donc exécute le processus du mobile.
