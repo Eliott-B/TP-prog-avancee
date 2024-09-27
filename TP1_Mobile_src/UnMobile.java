@@ -8,26 +8,31 @@ class UnMobile extends JPanel implements Runnable
     
     UnMobile(int telleLargeur, int telleHauteur)
     {
-	super();
-	saLargeur = telleLargeur;
-	saHauteur = telleHauteur;
-	setSize(telleLargeur, telleHauteur);
+		super();
+		saLargeur = telleLargeur;
+		saHauteur = telleHauteur;
+		setSize(telleLargeur, telleHauteur);
     }
 
     public void run()
     {
-	for (sonDebDessin=0; sonDebDessin < saLargeur - sonPas; sonDebDessin+= sonPas)
+		for (sonDebDessin=0; sonDebDessin < saLargeur - sonPas; sonDebDessin+= sonPas)
 	    {
-		repaint();
-		try{Thread.sleep(sonTemps);}
-		catch (InterruptedException telleExcp)
-		    {telleExcp.printStackTrace();}
+			repaint();
+			try
+			{
+				Thread.sleep(sonTemps);
+			}
+			catch (InterruptedException telleExcp)
+			{
+				telleExcp.printStackTrace();
+			}
 	    }
     }
 
     public void paintComponent(Graphics telCG)
     {
-	super.paintComponent(telCG);
-	telCG.fillRect(sonDebDessin, saHauteur/2, sonCote, sonCote);
+		super.paintComponent(telCG);
+		telCG.fillRect(sonDebDessin, saHauteur/2, sonCote, sonCote);
     }
 }
