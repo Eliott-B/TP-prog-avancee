@@ -186,7 +186,7 @@
 											"top": 435,
 											"width": 218.587890625,
 											"height": 13,
-											"text": "-HAUT_MOBILE: int = 250 {readOnly}",
+											"text": "-HAUT_MOBILE: int = 100 {readOnly}",
 											"horizontalAlignment": 0
 										},
 										{
@@ -203,7 +203,7 @@
 											"top": 450,
 											"width": 218.587890625,
 											"height": 13,
-											"text": "-NBRLIG: int = 2 {readOnly}",
+											"text": "-NBRLIG: int = 3 {readOnly}",
 											"horizontalAlignment": 0
 										},
 										{
@@ -3114,7 +3114,7 @@
 							"visibility": "private",
 							"type": "int",
 							"isReadOnly": true,
-							"defaultValue": "250"
+							"defaultValue": "100"
 						},
 						{
 							"_type": "UMLAttribute",
@@ -3126,7 +3126,7 @@
 							"visibility": "private",
 							"type": "int",
 							"isReadOnly": true,
-							"defaultValue": "2"
+							"defaultValue": "3"
 						},
 						{
 							"_type": "UMLAttribute",
