@@ -34,3 +34,12 @@ Pour lancer un thread, il faut l'instancier avec un objet `Runnable` et appeler 
 
 Pour modifier le comportement du mobile, il faut bien modifier la méthode `run` de la classe `UnMobile`.  
 C'est cette méthode qui est appelée lorsqu'on lance le thread et qui donc exécute le processus du mobile.
+
+## Avoir plusieurs mobiles sur la même fenêtre
+
+On peut utiliser un `GridLayout` pour indiquer le nombre de lignes et de colonnes qu'on veut sur notre fenêtre.
+
+```java
+Container leConteneur = getContentPane();
+leConteneur.setLayout (new GridLayout(NBRLIG, NBRCOL));
+```
