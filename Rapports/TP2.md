@@ -3,6 +3,11 @@
 > Eliott Barker  
 > INF3-FA  
 
+## Conception
+
+![Diagramme de classes](./assets/semaphore.jpg)  
+**Figure 1** : Diagramme de classes  
+
 ## Analyse de la ressource critiques et section critique
 
 Les threads ne doivent pas écrire en même temps sur le terminal. La ressource critique est donc `System.out`.  
