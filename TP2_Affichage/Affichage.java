@@ -7,24 +7,21 @@ import java.io.Reader;
 import java.io.BufferedReader;
 import java.lang.String;
 
-// class Exclusion{};
-
-public class Affichage extends Thread{
+public class Affichage extends Thread
+{
 	String texte; 
-        
-    // static Exclusion exclusionMutuelle = new Exclusion();
+	static semaphoreBinaire sem = new semaphoreBinaire(1);
 
 	public Affichage (String txt){texte=txt;}
 	
 	public void run()
 	{
-	    synchronized (System.out) //section critique
+	    sem.syncWait();
+		for (int i=0; i<texte.length(); i++)
 		{
-			for (int i=0; i<texte.length(); i++)
-			{
-				System.out.print(texte.charAt(i));
-				try {sleep(100);} catch(InterruptedException e){};
-			}
-	    }
+			System.out.print(texte.charAt(i));
+			try {sleep(100);} catch(InterruptedException e){};
+		}
+	    sem.syncSignal();
 	}
 }
