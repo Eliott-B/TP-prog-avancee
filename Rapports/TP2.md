@@ -56,3 +56,22 @@ sem.signal(); //fin de la section critique
 ```
 
 La première ressource qui passe par `sem.wait()` va pouvoir accéder à la section critique. Les autres attendent que la ressource soit libérée. Quand la ressource passe par `sem.signal()`, un thread qui attend la ressource va pouvoir accéder à la section critique.  
+
+## semaphore - Classe
+
+Dans la classe `semaphore`, l'incrément et le décrément indique le nombre de ressources disponibles.  
+Par défaut il y a `x` ressources disponibles, quand une ressource utilise la section critique, le nombre de ressources disponibles est décrémenté. Quand cette ressource a fini d'utiliser la section critique, le nombre de ressources disponibles est incrémenté.  
+
+## semaphoreBinaire
+
+Pour afficher les indications suivantes :
+
+```text
+j’entre en section critique
+je sors de la section critique
+```
+
+Il faut ajouter un `System.out.println()` dans la méthode `wait()` et `signal()`.  
+Pour le `System.out.println("j’entre en section critique");`, il faut le mettre après le `sem.wait();` et pour le `System.out.println("je sors de la section critique");`, il faut le mettre avant le `sem.signal();`.  
+Pour le premier cas, il faut le mettre après parce qu'il boucle dans `sem.wait()` et donc si il passe cette instruction c'est qu'il est entré dans la section critique.  
+Pour le deuxième cas, il faut le mettre avant parce que quand il donne le signal, il sort et une autre ressource peut rentrer directement dans la section critique. Notre message risque de s'afficher en même temps que le message de la ressource qui rentre dans la section critique.  
