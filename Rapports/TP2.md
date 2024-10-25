@@ -57,10 +57,14 @@ sem.signal(); //fin de la section critique
 
 La première ressource qui passe par `sem.wait()` va pouvoir accéder à la section critique. Les autres attendent que la ressource soit libérée. Quand la ressource passe par `sem.signal()`, un thread qui attend la ressource va pouvoir accéder à la section critique.  
 
+Il faut que `sem` soit en `static` puisqu'il doit être partagé entre les threads.
+
 ## semaphore - Classe
 
 Dans la classe `semaphore`, l'incrément et le décrément indique le nombre de ressources disponibles.  
 Par défaut il y a `x` ressources disponibles, quand une ressource utilise la section critique, le nombre de ressources disponibles est décrémenté. Quand cette ressource a fini d'utiliser la section critique, le nombre de ressources disponibles est incrémenté.  
+
+Quand le nombre de ressources disponibles est à 0, les autres ressources qui veulent accéder à la section critique sont bloquées. Elles attendent dans une boucle que le nombre de ressources disponibles soit supérieur à 0.  
 
 ## semaphoreBinaire
 
