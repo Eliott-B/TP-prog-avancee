@@ -11,12 +11,17 @@
 ### Mobile
 
 ![Diagramme de classes](./assets/mobile.jpg)  
-**Figure 1** : Diagramme de classes  
+**Figure 1** : Diagramme de classes du mobile  
 
 ### Affichage
 
 ![Diagramme de classes](./assets/semaphore.jpg)  
-**Figure 2** : Diagramme de classes  
+**Figure 2** : Diagramme de classes de l'affichage  
+
+### BAL
+
+![Diagramme de classes](./assets/bal.jpg)
+**Figure 3** : Diagramme de classes de la boite aux lettres
 
 ## Affichage d'un mobile
 
