@@ -40,22 +40,22 @@ class UnMobile extends JPanel implements Runnable
 				}
 			}
 
-			sem.syncWait();
-
-			for (sonDebDessin=tier-sonPas; sonDebDessin < tier*2 - sonPas; sonDebDessin+= sonPas)
-			{
-				repaint();
-				try
+			// sem.syncWait();
+			synchronized(JPanel.class){
+				for (sonDebDessin=tier-sonPas; sonDebDessin < tier*2 - sonPas; sonDebDessin+= sonPas)
 				{
-					Thread.sleep(sonTemps);
-				}
-				catch (InterruptedException telleExcp)
-				{
-					telleExcp.printStackTrace();
+					repaint();
+					try
+					{
+						Thread.sleep(sonTemps);
+					}
+					catch (InterruptedException telleExcp)
+					{
+						telleExcp.printStackTrace();
+					}
 				}
 			}
-
-			sem.syncSignal();
+			// sem.syncSignal();
 
 			for (sonDebDessin=tier*2-sonPas; sonDebDessin < saLargeur - sonPas; sonDebDessin+= sonPas)
 			{
@@ -85,22 +85,23 @@ class UnMobile extends JPanel implements Runnable
 				}
 			}
 			
-			sem.syncWait();
-
-			for (sonDebDessin=tier*2-sonPas; sonDebDessin > tier-sonPas; sonDebDessin -= sonPas)
+			// sem.syncWait();
+			synchronized(JPanel.class)
 			{
-				repaint();
-				try
+				for (sonDebDessin=tier*2-sonPas; sonDebDessin > tier-sonPas; sonDebDessin -= sonPas)
 				{
-					Thread.sleep(sonTemps);
-				}
-				catch (InterruptedException telleExcp)
-				{
-					telleExcp.printStackTrace();
+					repaint();
+					try
+					{
+						Thread.sleep(sonTemps);
+					}
+					catch (InterruptedException telleExcp)
+					{
+						telleExcp.printStackTrace();
+					}
 				}
 			}
-
-			sem.syncSignal();
+			// sem.syncSignal();
 
 			for (sonDebDessin=tier-sonPas; sonDebDessin > 0; sonDebDessin -= sonPas)
 			{
