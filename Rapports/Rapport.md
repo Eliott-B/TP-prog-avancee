@@ -1,8 +1,10 @@
 # Programmation parallèle sur machine à mémoire partagée
 
-> Eliott Barker
-> INF3-FA
-> 2024-2025
+> Eliott Barker  
+> INF3-FA  
+> 2024-2025  
+
+## Introduction
 
 ## Conception
 
@@ -161,3 +163,4 @@ synchronized(JPanel.class) {
 }
 ```
 
+## Conclusion
