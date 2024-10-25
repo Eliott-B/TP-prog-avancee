@@ -43,3 +43,17 @@ On peut utiliser un `GridLayout` pour indiquer le nombre de lignes et de colonne
 Container leConteneur = getContentPane();
 leConteneur.setLayout (new GridLayout(NBRLIG, NBRCOL));
 ```
+
+## Intégration des semaphores dans le mobile
+
+Pour intégrer les semaphores dans le mobile, il faut faire 6 boucles `for` pour définir les 6 sections de la fenêtre :
+
+- 0 -> 1/3 : allé
+- 1/3 -> 2/3 : section critique allé
+- 2/3 -> 3/3 : fin de l'allé
+- 3/3 -> 2/3 : retour
+- 2/3 -> 1/3 : section critique retour
+- 1/3 -> 0 : fin du retour
+
+La boucle qui va de 1/3 à 2/3 est une section critique avec la boucle qui va de 2/3 à 1/3.  
+La ressource critique est `JPanel`.  
