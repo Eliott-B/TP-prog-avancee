@@ -64,3 +64,9 @@ Pour voir l'application du semaphore, on peut rendre aléatoire le temps des mob
 Random random = new Random();
 sonTemps = random.nextInt(60 + 10) + 10;
 ```
+
+## Semaphore Naire
+
+Le semaphore naire est un semaphore qui peut être pris par plusieurs threads en même temps.  
+Il faut simplement créer une classe qui hérite de `semaphore`. On ne peut pas directement utiliser la classe `semaphore` car elle est abstraite.  
+Ensuite dans le mobile, on peut indiquer le nombre de threads qui peuvent prendre le semaphore en même temps.
