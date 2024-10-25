@@ -6,8 +6,8 @@ import javax.swing.*;
 class UnMobile extends JPanel implements Runnable
 {
     int saLargeur, saHauteur, sonDebDessin;
-	int sonPas;
-    final int sonTemps=50, sonCote=40;
+	int sonTemps;
+    final int sonPas=10, sonCote=40;
 	static semaphoreBinaire sem = new semaphoreBinaire(1);
     
     UnMobile(int telleLargeur, int telleHauteur)
@@ -18,8 +18,7 @@ class UnMobile extends JPanel implements Runnable
 		setSize(telleLargeur, telleHauteur);
 		
 		Random random = new Random();
-
-		sonPas = random.nextInt(30 + 10) + 10;
+		sonTemps = random.nextInt(60 + 10) + 10;
     }
 
     public void run()

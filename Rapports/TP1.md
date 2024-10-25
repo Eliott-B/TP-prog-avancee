@@ -57,3 +57,10 @@ Pour intégrer les semaphores dans le mobile, il faut faire 6 boucles `for` pour
 
 La boucle qui va de 1/3 à 2/3 est une section critique avec la boucle qui va de 2/3 à 1/3.  
 La ressource critique est `JPanel`.  
+
+Pour voir l'application du semaphore, on peut rendre aléatoire le temps des mobiles.
+
+```java
+Random random = new Random();
+sonTemps = random.nextInt(60 + 10) + 10;
+```
