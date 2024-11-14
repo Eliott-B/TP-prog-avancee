@@ -249,4 +249,45 @@ Pour utiliser le `JLabel` depuis le producteur et le consommateur, j'ai créé u
 lettreLabel.setText(message);
 ```
 
+## Utilisation d'un tampon
+
+Pour l'utilisation d'un tampon, on fait un tableau de `String` de taille `x` défini à la création de la classe.  
+On a un pointeur `tete` qui indique la position de la tête du tampon et un pointeur `queue` qui indique la position de la queue du tampon. On a aussi un indicateur `capacite` qui indique la taille du tampon et `charge` qui indique le nombre de lettre déjà présente.  
+On va aussi utiliser les méthodes `wait` et `notify` pour gérer les threads et l'attente à la ressource critique. Dans ce cas, il y a plusieurs ressources critiques : le tampon, la tête, la queue et la charge.  
+
+BoiteAuxLettres :
+
+```java
+public synchronized void deposer(String contenu) throws InterruptedException
+{
+    while (charge == capacite)
+    {
+        wait(); // On attend que la bal soit déchargée
+    }
+    lettreTampon[queue] = contenu;
+    queue = (queue + 1) % capacite;
+    charge++;
+    notifyAll(); // On notifie qu'une lettre a été déposée
+    print(lettreTampon);
+}
+
+public synchronized String retirer() throws InterruptedException
+{
+    while (charge == 0)
+    {
+        wait(); // On attend qu'une lettre soit déposée
+    }
+    String lettre = lettreTampon[tete];
+    tete = (tete + 1) % capacite;
+    charge--;
+    notifyAll(); // On notifie qu'une lettre a été retirée
+    print(lettreTampon);
+    return lettre;
+}
+```
+
+On est obligé de boucler sur `wait` pour éviter les faux réveils. Les méthodes `wait` et `notify` se partagent entre 2 process : le dépôt et le retrait.  
+
+On peut utiliser une fonction `print` pour afficher le tampon et vérifier que le dépôt et le retrait se font bien.
+
 ## Conclusion

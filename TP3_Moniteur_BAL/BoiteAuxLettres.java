@@ -2,37 +2,51 @@ package TP3_Moniteur_BAL;
 
 public class BoiteAuxLettres
 {
-    private String lettre;
-    private boolean disponible = true;
+    private String[] lettreTampon;
+    private int tete = 0;
+    private int queue = 0;
+    private int capacite;
+    private int charge = 0;
 
-    public BoiteAuxLettres()
+    public BoiteAuxLettres(int nbLettres)
     {
-
+        lettreTampon = new String[nbLettres];
+        capacite = nbLettres;
     }
 
-    public synchronized void deposer(String contenu) throws Exception
+    public synchronized void deposer(String contenu) throws InterruptedException
     {
-        if (disponible)
+        while (charge == capacite)
         {
-            lettre = contenu;
-            disponible = false;
+            wait(); // On attend que la bal soit déchargée
         }
-        else
+        lettreTampon[queue] = contenu;
+        queue = (queue + 1) % capacite;
+        charge++;
+        notifyAll(); // On notifie qu'une lettre a été déposée
+        // print(lettreTampon);
+    }
+
+    public synchronized String retirer() throws InterruptedException
+    {
+        while (charge == 0)
         {
-            throw new Exception("Boite aux lettres non disponible");
+            wait(); // On attend qu'une lettre soit déposée
         }
+        String lettre = lettreTampon[tete];
+        tete = (tete + 1) % capacite;
+        charge--;
+        notifyAll(); // On notifie qu'une lettre a été retirée
+        // print(lettreTampon);
+        return lettre;
     }
 
-    public synchronized String retirer()
-    {
-        String copieLettre = lettre;
-        lettre = null;
-        disponible = true;
-        return copieLettre;
-    }
-
-    public boolean estDisponible()
-    {
-        return disponible;
-    }
+    // public static void print(String[] array)
+    // {
+    //     for (String s : array)
+    //     {
+    //         System.out.print(s + " ");
+    //     }
+    //     System.out.println();
+    // }
 }
