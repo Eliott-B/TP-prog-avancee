@@ -223,4 +223,14 @@ while (lettreRetire == null || !lettreRetire.equals("Q"))
 }
 ```
 
+## Interface graphique
+
+Pour l'interface graphique, on peut faire une fenêtre simple avec un `JTextArea` pour la lettre à déposer, 2 `JButton` pour déposer et retirer la lettre et un `JLabel` pour afficher la lettre récupérée ou les erreurs obtenues.  
+
+Pour utiliser le `JLabel` depuis le producteur et le consommateur, j'ai créé une méthode `setLettreLabel` qui est static et `synchronized` pour que les threads ne puissent pas accéder à la ressource critique en même temps. La ressource critique est le `JLabel` et la section critique est :
+
+```java
+lettreLabel.setText(message);
+```
+
 ## Conclusion

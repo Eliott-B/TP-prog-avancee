@@ -14,19 +14,19 @@ public class Habitant extends Thread
     {
         try
         {
-            while (lettreRetire == null || !lettreRetire.equals("Q"))
+            lettreRetire = bal.retirer();
+            if (lettreRetire == null)
             {
-                while (bal.estDisponible())
-                {
-                    sleep(1000);
-                }
-                lettreRetire = bal.retirer();
-                System.out.println("Lettre récupéré : " + lettreRetire);
+                Main.setLettreLabel("Boite aux lettres vide");
+            }
+            else
+            {
+                Main.setLettreLabel("Lettre récupéré : " + lettreRetire);
             }
         }
         catch (Exception e)
         {
-            System.out.println(e.getMessage());
+            Main.setLettreLabel(e.getMessage());
         }
     }
 
