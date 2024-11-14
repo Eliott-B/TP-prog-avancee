@@ -6,6 +6,13 @@
 
 ## Introduction
 
+La programmation parallèle est une technique qui permet d'exécuter plusieurs tâches en même temps et de gérer les ressources critiques.  
+Dans ce rapport, nous allons voir comment gérer les ressources critiques avec des semaphores et des sections critiques. Ainsi que l'utilisation du modèle producteur-consommateur.  
+Une section critique est une partie du code qui ne peut être exécutée que par `x` threads à la fois.  
+Une ressource critique est une ressource qui ne peut être utilisée que par `x` threads à la fois. C'est une ressource partagée entre les threads. C'est ce qui détermine la section critique.  
+Un semaphore est un objet qui permet de gérer les ressources critiques et les sections critiques. Il permet de bloquer un thread si la ressource critique est déjà utilisée.  
+Le modèle producteur-consommateur est un modèle qui permet de faire communiquer des threads entre eux. Il y a 3 classes : la classe qui gère la ressource critique, la classe qui produit et la classe qui consomme.  
+
 ## Conception
 
 ### Mobile
@@ -13,15 +20,31 @@
 ![Diagramme de classes](./assets/mobile.jpg)  
 **Figure 1** : Diagramme de classes du mobile  
 
+Je crée la classe `semaphore` qui est abstraite et qui contient les méthodes `wait` et `signal`.  
+Je crée la classe `semaphoreBinaire` qui hérite de `semaphore` et qui contient aussi les méthodes `wait` et `signal`.  
+Je crée la classe `UnMobile` qui implémente `Runnable` et qui contient les méthodes `UnMobile`, `run` et `paintComponent`. Le classe `UnMobile` hérite de `JPanel` et utilise `semaphoreBinaire`.  
+Je crée la classe `UneFenetre` qui hérite de `JFrame` et qui contient la méthode `UneFenetre`. La classe `UneFenetre` utilise `UnMobile`. Elle a une dépendance avec `JButton`, `Container` et `Thread`.  
+Je crée la classe `TpMobile` qui contient la méthode `main`. La classe `TpMobile` utilise `UneFenetre`. C'est le point d'entrée de l'application.  
+
 ### Affichage
 
 ![Diagramme de classes](./assets/semaphore.jpg)  
 **Figure 2** : Diagramme de classes de l'affichage  
 
+Je crée la classe `semaphore` qui est abstraite et qui contient les méthodes `wait` et `signal`.  
+Je crée la classe `semaphoreBinaire` qui hérite de `semaphore` et qui contient la méthode `syncSignal`.  
+Je crée la classe `Affichage` qui hérite de `Thread` et qui contient les méthodes `Affichage` et `run`. La classe `Affichage` utilise `semaphoreBinaire`.  
+Je crée la classe `Main` qui contient la méthode `main`. La classe `Main` utilise `Affichage`. C'est le point d'entrée de l'application.  
+
 ### BAL
 
 ![Diagramme de classes](./assets/bal.jpg)
-**Figure 3** : Diagramme de classes de la boite aux lettres
+**Figure 3** : Diagramme de classes de la boite aux lettres  
+
+Je crée la classe `BoiteAuxLettres` qui contient les méthodes `deposer` et `retirer`.  
+Je crée la classe `Facteur` qui hérite de `Thread` et qui contient les méthodes `Facteur` et `run`. La classe `Facteur` utilise `BoiteAuxLettres`.  
+Je crée la classe `Habitant` qui hérite de `Thread` et qui contient les méthodes `Habitant` et `run`. La classe `Habitant` utilise `BoiteAuxLettres`.  
+Je crée la classe `Main` qui contient la méthode `main`. La classe `Main` utilise `Facteur`, `Habitant` et `BoiteAuxLettres`. C'est le point d'entrée de l'application.  
 
 ## Affichage d'un mobile
 
@@ -291,3 +314,7 @@ On est obligé de boucler sur `wait` pour éviter les faux réveils. Les méthod
 On peut utiliser une fonction `print` pour afficher le tampon et vérifier que le dépôt et le retrait se font bien.
 
 ## Conclusion
+
+Nous avons donc vu qu'il y a plusieurs méthodes pour gérer les ressources critiques et les sections critiques.  
+Les semaphores permettent de gérer les ressources critiques et les sections critiques.  
+Le modèle producteur-consommateur permet de faire communiquer des threads entre eux.  

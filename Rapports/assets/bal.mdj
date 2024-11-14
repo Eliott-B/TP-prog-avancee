@@ -273,30 +273,13 @@
 											"height": 13,
 											"text": "«synchronized»+recuperer()",
 											"horizontalAlignment": 0
-										},
-										{
-											"_type": "UMLOperationView",
-											"_id": "AAAAAAGTKwbHjG0tNSE=",
-											"_parent": {
-												"$ref": "AAAAAAGSwv5EaXhgFUo="
-											},
-											"model": {
-												"$ref": "AAAAAAGTKwbHfG0qanM="
-											},
-											"font": "Arial;13;0",
-											"left": 277,
-											"top": 302,
-											"width": 271.83837890625,
-											"height": 13,
-											"text": "+estDisponible()",
-											"horizontalAlignment": 0
 										}
 									],
 									"font": "Arial;13;0",
 									"left": 272,
 									"top": 252,
 									"width": 281.83837890625,
-									"height": 68
+									"height": 53
 								},
 								{
 									"_type": "UMLReceptionCompartmentView",
@@ -336,7 +319,7 @@
 							"left": 272,
 							"top": 144,
 							"width": 281.83837890625,
-							"height": 176,
+							"height": 161,
 							"nameCompartment": {
 								"$ref": "AAAAAAGSwv5EaXhaacs="
 							},
@@ -2328,14 +2311,6 @@
 							},
 							"name": "recuperer",
 							"stereotype": "synchronized"
-						},
-						{
-							"_type": "UMLOperation",
-							"_id": "AAAAAAGTKwbHfG0qanM=",
-							"_parent": {
-								"$ref": "AAAAAAGSwv5EaHhXN/U="
-							},
-							"name": "estDisponible"
 						}
 					]
 				},

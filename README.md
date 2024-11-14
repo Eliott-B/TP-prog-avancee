@@ -5,4 +5,6 @@
 > INF3-FA  
 > 2024-2025  
 
-[Rapport](Rapports/Rapport.md)
+## Rapports
+
+- [Programmation parallèle sur machine à mémoire partagée](Rapports/Rapport.md)  
