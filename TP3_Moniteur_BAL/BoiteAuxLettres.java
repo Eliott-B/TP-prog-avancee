@@ -30,4 +30,9 @@ public class BoiteAuxLettres
         disponible = true;
         return copieLettre;
     }
+
+    public boolean estDisponible()
+    {
+        return disponible;
+    }
 }

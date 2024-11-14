@@ -14,8 +14,15 @@ public class Habitant extends Thread
     {
         try
         {
-            lettreRetire = bal.retirer();
-            System.out.println("Lettre récupéré : " + lettreRetire);
+            while (lettreRetire == null || !lettreRetire.equals("Q"))
+            {
+                while (bal.estDisponible())
+                {
+                    sleep(1000);
+                }
+                lettreRetire = bal.retirer();
+                System.out.println("Lettre récupéré : " + lettreRetire);
+            }
         }
         catch (Exception e)
         {

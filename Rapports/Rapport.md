@@ -176,8 +176,51 @@ Le modèle producteur-consommateur consiste à avoir 3 classes :
 - La classe qui produit, ici `Facteur`  
 - La classe qui consomme, ici `Habitant`  
 
-La classe `BoiteAuxLettres` est la classe qui contient la ressource critique, la lettre `String`.  
+La classe `BoiteAuxLettres` est la classe qui contient la ressource critique, la lettre `String`. La boite aux lettres propose les services `deposer` et `retirer`.  
 La classe `Facteur` s'occupe de déposer des lettres dans la boite aux lettres mais qu'une lettre est possible par boite aux lettres.  
 La classe `Habitant` s'occupe de lire les lettres dans la boite aux lettres. Si la boite aux lettres est vide, il lit `null`.  
+
+## N'arrêter le producteur et le consommateur que si la lettre est `Q`
+
+Pour arrêter le producteur et le consommateur quand la lettre est "Q", il faut ajouter une fonction qui permet de savoir si la boite aux lettres est disponible et faire boucler les threads tant que la lettre n'est pas "Q".  
+
+BAL :
+
+```java
+public boolean estDisponible()
+{
+    return estDisponible;
+}
+```
+
+Facteur :
+
+```java
+while (lettreADeposer == null || !lettreADeposer.equals("Q"))
+{
+    while (!bal.estDisponible())
+    {
+        sleep(1000);
+    }
+    System.out.println("Entrez la lettre à déposer : ");
+    lettreADeposer = System.console().readLine();
+    bal.deposer(lettreADeposer);
+    System.out.println("Depot de la lettre : " + lettreADeposer);
+}
+```
+
+Habitant :
+
+```java
+while (lettreRetire == null || !lettreRetire.equals("Q"))
+{
+    while (bal.estDisponible())
+    {
+        sleep(1000);
+    }
+    lettreRetire = bal.retirer();
+    System.out.println("Lettre récupéré : " + lettreRetire);
+}
+```
 
 ## Conclusion
