@@ -182,7 +182,7 @@ La classe `Habitant` s'occupe de lire les lettres dans la boite aux lettres. Si 
 
 ## N'arrêter le producteur et le consommateur que si la lettre est `Q`
 
-Pour arrêter le producteur et le consommateur quand la lettre est "Q", il faut ajouter une fonction qui permet de savoir si la boite aux lettres est disponible et faire boucler les threads tant que la lettre n'est pas "Q".  
+Pour arrêter le producteur et le consommateur quand la lettre est "Q", il faut ajouter une fonction qui permet de savoir si la boite aux lettres est disponible et faire boucler les threads. Quand la lettre "Q" est rencontrée, il faut intérrompre les threads.  
 
 BAL :
 
@@ -196,7 +196,7 @@ public boolean estDisponible()
 Facteur :
 
 ```java
-while (lettreADeposer == null || !lettreADeposer.equals("Q"))
+while (true)
 {
     while (!bal.estDisponible())
     {
@@ -204,22 +204,38 @@ while (lettreADeposer == null || !lettreADeposer.equals("Q"))
     }
     System.out.println("Entrez la lettre à déposer : ");
     lettreADeposer = System.console().readLine();
-    bal.deposer(lettreADeposer);
-    System.out.println("Depot de la lettre : " + lettreADeposer);
+    if (lettreADeposer.equals("Q"))
+    {
+        System.out.println("Fin du dépôt de lettres");
+        Thread.currentThread().interrupt();
+    }
+    else
+    {
+        bal.deposer(lettreADeposer);
+        System.out.println("Depot de la lettre : " + lettreADeposer);
+    }
 }
 ```
 
 Habitant :
 
 ```java
-while (lettreRetire == null || !lettreRetire.equals("Q"))
+while (true)
 {
     while (bal.estDisponible())
     {
         sleep(1000);
     }
     lettreRetire = bal.retirer();
-    System.out.println("Lettre récupéré : " + lettreRetire);
+    if (lettreRetire.equals("Q"))
+    {
+        System.out.println("Fin de la récupération de lettres");
+        Thread.currentThread().interrupt();
+    }
+    else
+    {
+        System.out.println("Lettre récupéré : " + lettreRetire);
+    }
 }
 ```
 
