@@ -168,4 +168,16 @@ synchronized(JPanel.class) {
 }
 ```
 
+## Utilisation du modèle producteur-consommateur
+
+Le modèle producteur-consommateur consiste à avoir 3 classes :  
+
+- La classe qui gère la ressource critique, ici `BoiteAuxLettres`  
+- La classe qui produit, ici `Facteur`  
+- La classe qui consomme, ici `Habitant`  
+
+La classe `BoiteAuxLettres` est la classe qui contient la ressource critique, la lettre `String`.  
+La classe `Facteur` s'occupe de déposer des lettres dans la boite aux lettres mais qu'une lettre est possible par boite aux lettres.  
+La classe `Habitant` s'occupe de lire les lettres dans la boite aux lettres. Si la boite aux lettres est vide, il lit `null`.  
+
 ## Conclusion
