@@ -13,6 +13,22 @@ Une ressource critique est une ressource qui ne peut être utilisée que par `x`
 Un semaphore est un objet qui permet de gérer les ressources critiques et les sections critiques. Il permet de bloquer un thread si la ressource critique est déjà utilisée.  
 Le modèle producteur-consommateur est un modèle qui permet de faire communiquer des threads entre eux. Il y a 3 classes : la classe qui gère la ressource critique, la classe qui produit et la classe qui consomme.  
 
+## Architectures hardware
+
+### Ordinateur IUT (G26)
+
+CPU : Intel Core i7-7700 3.6GHz (4 coeurs 8 threads 8MB cache)  
+RAM : 32Go DDR4  
+GPU : Intel HD Graphics 630  
+Stockage : SanDisk X400 512Go SSD  
+OS : Atlas OS  
+
+### Téléphone personnel
+
+Modèle : Iphone 12  
+CPU : Apple A14 Bionic (6 coeurs 2x3.1GHz 4x1.8GHz 16MB cache) ARM 64 bits  
+RAM : 4 GO  
+
 ## Conception
 
 ### Mobile
@@ -386,3 +402,4 @@ On n'a plus besoin de `synchronized` car c'est la classe `ArrayBlockingQueue` qu
 Nous avons donc vu qu'il y a plusieurs méthodes pour gérer les ressources critiques et les sections critiques.  
 Les semaphores permettent de gérer les ressources critiques et les sections critiques.  
 Le modèle producteur-consommateur permet de faire communiquer des threads entre eux.  
+Il y a plusieurs méthodes pour gérer les ressources critiques et les sections critiques. Les méthodes doivent être choisies en fonction du besoin et de la situation.  
