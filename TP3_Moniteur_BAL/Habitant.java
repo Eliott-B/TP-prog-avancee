@@ -23,6 +23,10 @@ public class Habitant extends Thread
                     System.out.println("Fin de la récupération de lettres");
                     Thread.currentThread().interrupt();
                 }
+                else if (lettreRetire == null)
+                {
+                    // Pas de lettre dans la boite aux lettres
+                }
                 else
                 {
                     System.out.println("Lettre récupéré : " + lettreRetire);

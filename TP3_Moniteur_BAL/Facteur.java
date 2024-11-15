@@ -16,12 +16,16 @@ public class Facteur extends Thread
         {
             for (String lettreADeposer : lettresADeposer)
             {
-                Thread.sleep(1000); // 1 seconde
-                bal.deposer(lettreADeposer);
-                System.out.println("Lettre déposé : " + lettreADeposer);
+                boolean estDeposee = false;
+                while (!estDeposee)
+                {
+                    Thread.sleep(1000); // 1 seconde
+                    estDeposee = bal.deposer(lettreADeposer);
+                    System.out.println("Lettre déposé : " + lettreADeposer);
+                }
             }
             System.out.println("Fin du dépôt de lettres");
-            Thread.currentThread().interrupt();
+            System.out.println("[" + Thread.currentThread().getName() +  "] je m'arrête");
         } catch (InterruptedException e) {
             System.out.println("[" + Thread.currentThread().getName() +  "] je m'arrête");
         }

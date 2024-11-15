@@ -272,7 +272,7 @@ Pour utiliser le `JLabel` depuis le producteur et le consommateur, j'ai créé u
 lettreLabel.setText(message);
 ```
 
-## Utilisation d'un tampon
+## Utilisation d'un tampon - Tableau
 
 Pour l'utilisation d'un tampon, on fait un tableau de `String` de taille `x` défini à la création de la classe.  
 On a un pointeur `tete` qui indique la position de la tête du tampon et un pointeur `queue` qui indique la position de la queue du tampon. On a aussi un indicateur `capacite` qui indique la taille du tampon et `charge` qui indique le nombre de lettre déjà présente.  
@@ -312,6 +312,74 @@ public synchronized String retirer() throws InterruptedException
 On est obligé de boucler sur `wait` pour éviter les faux réveils. Les méthodes `wait` et `notify` se partagent entre 2 process : le dépôt et le retrait.  
 
 On peut utiliser une fonction `print` pour afficher le tampon et vérifier que le dépôt et le retrait se font bien.
+
+## Utilisation d'un tampon - ArrayBlockingQueue
+
+Pour l'utilisation d'un tampon automatique, on peut utiliser la classe `ArrayBlockingQueue` qui est une file d'attente de taille fixe.  
+Cette classe permet de bloquer l'accès à l'objet si il est déjà utilisé. Ainsi, c'est l'objet qui devient un moniteur.  
+
+BoiteAuxLettres :
+
+```java
+public boolean deposer(String contenu) throws InterruptedException
+{
+    return lettreTampon.offer(contenu, 1, java.util.concurrent.TimeUnit.SECONDS);
+}
+
+public String retirer() throws InterruptedException
+{
+    return lettreTampon.poll(1, java.util.concurrent.TimeUnit.SECONDS);
+}
+
+public int getNbLettres()
+{
+    return lettreTampon.size();
+}
+```
+
+Facteur :
+
+```java
+for (String lettreADeposer : lettresADeposer)
+{
+    boolean estDeposee = false;
+    while (!estDeposee)
+    {
+        Thread.sleep(1000); // 1 seconde
+        estDeposee = bal.deposer(lettreADeposer);
+        System.out.println("Lettre déposé : " + lettreADeposer);
+    }
+}
+System.out.println("Fin du dépôt de lettres");
+System.out.println("[" + Thread.currentThread().getName() +  "] je m'arrête");
+```
+
+Habitant :
+
+```java
+while (true)
+{
+    Thread.sleep(1500); // 1.5 secondes
+    lettreRetire = bal.retirer();
+    if (lettreRetire.equals("*"))
+    {
+        System.out.println("Fin de la récupération de lettres");
+        Thread.currentThread().interrupt();
+    }
+    else if (lettreRetire == null)
+    {
+        // Pas de lettre dans la boite aux lettres
+    }
+    else
+    {
+        System.out.println("Lettre récupéré : " + lettreRetire);
+    }
+}
+```
+
+On peut aussi retirer le `while (!estDeposee)` dans le producteur mais à ce moment là toutes les lettres ne seront pas déposées. Quand la boite aux lettres est pleine ou utilisée, on passera à la lettre suivante.  
+
+On n'a plus besoin de `synchronized` car c'est la classe `ArrayBlockingQueue` qui gère les ressources critiques.  
 
 ## Conclusion
 
