@@ -12,12 +12,12 @@
 
 #### Pi
 
-![Diagramme de classes](./assets/pi.jpg)  
+![Diagramme de classes](./assets/Pi.jpg)  
 **Figure 1** : Diagramme de classes de Pi  
 
 #### Assignment
 
-![Diagramme de classes](./assets/assignment.jpg)
+![Diagramme de classes](./assets/Assignment.jpg)
 **Figure 2** : Diagramme de classes de Assignment
 
 ## Assignment102 - PiMonteCarlo
