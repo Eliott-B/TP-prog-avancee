@@ -1,4 +1,4 @@
-# Programmation parallèle de la méthode de Monte Carlo pour le calcul de Pi
+# Modèles et paradigmes de programmation parallèle
 
 > Eliott Barker  
 > INF3-FA  
