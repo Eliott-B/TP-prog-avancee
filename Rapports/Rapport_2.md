@@ -30,4 +30,12 @@ La fonction `getPi()` est la fonction qui effectue la méthode de Monte Carlo.
 `ExecutorService` est un support de thread et `Thread` est un support de tâche.  
 `Executors.newWorkStealingPool()` permet de créer un pool (un groupe) de threads et quand un thread termine, il n'est pas détruit mais réutilisé.  
 
+## Pi - PiMonteCarlo
+
+Le code suit un paradigme `Master-Worker`.  
+`Callable` est une fonction paramétré qui retourne une valeur précisée, contrairement à `Runnable` qui retourne `void`.  
+
+Cette fois ci, on utilise `Executors.newFixedThreadPool(numWorkers)` qui permet de créer un groupe de threads de la taille précisée.  
+On stocke les résultats obtenu dans une liste de `Future<Long>`. Cette liste est une liste de résultats futurs. Derrière on récupère les résultats avec `future.get()`.  
+
 ## Conclusion
