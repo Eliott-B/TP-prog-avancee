@@ -1,4 +1,4 @@
-package TP4_Shared;
+package TP4_Shared.Pi;
 
 import java.util.ArrayList;
 import java.util.List;

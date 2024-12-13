@@ -24,6 +24,7 @@
 
 Dans `PiMonteCarlo`, notre `n_cible` du pseudo-code est `nAtomSuccess`.  
 :warning: `worker` n'est pas un worker du paradigme `Master-Worker` mais seulement un runnable, donc une tâche.  
+AtomicInteger est un objet qui protège notre entier, c'est un moniteur.  
 
 La fonction `getPi()` est la fonction qui effectue la méthode de Monte Carlo.  
 
@@ -36,6 +37,6 @@ Le code suit un paradigme `Master-Worker`.
 `Callable` est une fonction paramétré qui retourne une valeur précisée, contrairement à `Runnable` qui retourne `void`.  
 
 Cette fois ci, on utilise `Executors.newFixedThreadPool(numWorkers)` qui permet de créer un groupe de threads de la taille précisée.  
-On stocke les résultats obtenu dans une liste de `Future<Long>`. Cette liste est une liste de résultats futurs. Derrière on récupère les résultats avec `future.get()`.  
+On stocke les résultats obtenu dans une liste de `Future<Long>`. Cette liste est une liste de résultats futurs. Derrière on récupère les résultats avec `future.get()`. Il récupère les résultats d'un thread, on ne sait pas quand est-ce qu'on va les récupérer.  
 
 ## Conclusion

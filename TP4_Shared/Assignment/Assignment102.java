@@ -1,4 +1,4 @@
-package TP4_Shared;
+package TP4_Shared.Assignment;
 
 // Estimate the value of Pi using Monte-Carlo Method, using parallel program
 import java.util.concurrent.ExecutorService;
