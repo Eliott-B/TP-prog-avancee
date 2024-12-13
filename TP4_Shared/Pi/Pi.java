@@ -1,5 +1,8 @@
 package TP4_Shared.Pi;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -17,10 +20,10 @@ public class Pi
 {
     public static void main(String[] args) throws Exception 
     {
+		int nTotByWorkers = Integer.parseInt(args[0]);
+		int nWorkers = Integer.parseInt(args[1]);
 		long total=0;
-		// 10 workers, 50000 iterations each
-		total = new Master().doRun(50000, 10);
-		System.out.println("total from Master = " + total);
+		total = new Master().doRun(nTotByWorkers, nWorkers);
     }
 }
 
@@ -29,8 +32,7 @@ public class Pi
  * and aggregates the results.
  */
 class Master {
-    public long doRun(int totalCount, int numWorkers) throws InterruptedException, ExecutionException 
-    {
+    public long doRun(int totalCount, int numWorkers) throws InterruptedException, ExecutionException, IOException {
 
 		long startTime = System.currentTimeMillis();
 
@@ -57,14 +59,21 @@ class Master {
 
 		long stopTime = System.currentTimeMillis();
 
-		System.out.println("\nPi : " + pi );
-		System.out.println("Error: " + (Math.abs((pi - Math.PI)) / Math.PI) +"\n");
-
-		System.out.println("Ntot: " + totalCount*numWorkers);
+		System.out.println("Approx value: " + pi);
+		double err = Math.abs((pi - Math.PI)) / Math.PI;
+		System.out.println("Error: " + err);
+		System.out.println("Total: " + totalCount*numWorkers);
 		System.out.println("Available processors: " + numWorkers);
-		System.out.println("Time Duration (ms): " + (stopTime - startTime) + "\n");
+		long time = stopTime - startTime;
+		System.out.println("Time Duration (ms): " + time + "\n");
 
-		System.out.println( (Math.abs((pi - Math.PI)) / Math.PI) +" "+ totalCount*numWorkers +" "+ numWorkers +" "+ (stopTime - startTime));
+		File file = new File("data\\out_Pi_G26_4c.txt");
+		if (! file.exists()) {
+			file.createNewFile();
+		}
+		FileWriter stream = new FileWriter(file, true);
+		stream.write(err + " " + totalCount*numWorkers + " " + numWorkers + " " + time + "\n");
+		stream.close();
 
 		exec.shutdown();
 		return total;
