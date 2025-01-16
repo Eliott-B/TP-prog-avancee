@@ -6,6 +6,119 @@
 
 ## Introduction
 
+## Calcul de $\Pi$ par une méthode de Monte Carlo (MC)
+
+### I. Généralités
+
+Méthode tiré du casino de Monaco, symbole du hasard.  
+Utilisé pour le calcul scientifique.  
+
+Pour $\Pi$ :  
+
+![Figure 1 - Mc](./assets/mc.jpg)
+*Figure 1*  
+
+La probabilité qu'un point tombe dans le $1/4$ de disque :  
+$P = \frac{A_{(1/4)d}}{A_{c}} = \frac{\frac{1}{4}\Pi r^2}{r^2} = \frac{\Pi}{4}$  
+$P \approx \frac{n_{cible}}{n_{total}}$
+$=> \Pi \simeq 4 * \frac{n_{cible}}{n_{total}}$
+
+$X_{p}(x_{p}, y_{p})$  
+$d = \sqrt{x_{p}^2 + y_{p}^2}$  
+Condition : $d \leq 1$  
+
+Soit un carré de coté 1  
+Soit un quart de disque de rayon r = 1  
+
+L'aide du carré s'écris :  
+$A_{c} = r^2 = 1$  
+L'aire du quart de disque s'écris :  
+$A_{d/4} = \frac{\Pi r^2}{4} = \frac{\Pi}{4}$  
+
+*Figure 1* illustre le tirage aléatoire de points $X_{p}$ de coordonnées $(x_{p}, y_{p})$ où $x_{p}$ et $y_{p}$ suivent une loi $U(]0;1[)$.  
+La probabilité qu'un point $X_{p}$ soit dans le quart de disque est telle que :  
+$P(X_{p} | d_{p}<1) = \frac{A_{d/4}}{A_{c}} = \frac{\Pi}{4}$  
+On effectue $n_{total}$ tirages. Si $n_{total}$ est grand alors on approche :  
+$P(X_{p} | d_{p}<1) \approx \frac{n_{cible}}{n_{total}}$ avec $n_{cible}$ le nombre de points dans le quart de disque (la cible).  
+On peut donc approcher $\Pi$ par :  
+$\Pi \approx 4 * \frac{n_{cible}}{n_{total}}$  
+On écrit l'algorithme 1 permettant de calculer $\Pi$ de cette manière.  
+
+**Algorithme 1 :** MC
+
+```text
+n_cible = 0
+p = 0
+tant que p < n_total
+    x = rand(0,1)
+    y = rand(0,1)
+    si x^2 + y^2 <= 1 alors
+        n_cible++
+    p++
+fin tant que
+pi = (n_cible / n_total) * 4
+```
+
+### II. Parallélisation
+
+On choisi un modèle de parallélisation par tâches.  
+
+1) les tâches :  
+   1) compter le nombre de n_cible  
+   2) calculer pi  
+2) les sous-tâches :  
+   1) - générer xi *(n_total sous tâches)*  
+     - générer yi  
+     - incrémenter n_cible si d<1  
+   2) calculer pi  
+3) les dépendances :  
+la tâche 2) dépend de la tâche 1)  
+n_cible est une ressource critique  
+1\) est une boucle parallèle  
+
+Le temps d'accès aux données est plus long que le temps nécessaire à l'exécution d'une itération. On va donc paralléliser des sous boucles afin de faire plusieurs opérations par tâche.  
+=> On change le grain des tâches  
+
+**Algorithme 2 :**  
+
+```text
+boucle parallèle de 0 à n_total
+    x = rand(0,1)
+    y = rand(0,1)
+    si x^2 + y^2 <= 1 alors # Section critique
+        n_cible++ # Section critique + ressource critique
+fin boucle
+pi = (n_cible / n_total) * 4
+```
+
+**Algorithme 3 :**  
+
+```text
+boucle parallèle de 0 à n_total/100
+    boucle de 0 à 100
+        x = rand(0,1)
+        y = rand(0,1)
+        si x^2 + y^2 <= 1 alors # Section critique
+            n_cible++ # Section critique + ressource critique
+    fin boucle
+fin boucle
+pi = (n_cible / n_total) * 4
+```
+
+ou
+
+```text
+nbworkers = 100
+ntw = n_total / nbworkers
+ncible_array[nbworkers]
+pour i=0 : ntw-1 # Worker[k]
+    generer (xi, yi) # Séquentiel (1)
+    compter -> {ncible_array[k]++} # Séquentiel (1)
+fin pour
+sommer ncible_array dans n_cible (2)
+calculer pi (3)
+```
+
 ## Conception
 
 ### Shared
