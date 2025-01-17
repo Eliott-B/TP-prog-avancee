@@ -34,9 +34,17 @@ public class WorkerSocket {
                 System.out.println("Server receives totalCount = " + str);
 
                 // compute
-                System.out.println("TODO : compute Monte Carlo and send total");
+                int totalCount = Integer.parseInt(str);
+                int ncible = 0;
+                for (int i = 0; i < totalCount; i++) {
+                    double x = Math.random();
+                    double y = Math.random();
+                    if (x * x + y * y <= 1) {
+                        ncible++;
+                    }
+                }
 
-                pWrite.println(str); // send number of points in quarter of disk
+                pWrite.println(ncible); // send number of points in quarter of disk
             } else {
                 isRunning = false;
             }
@@ -44,5 +52,6 @@ public class WorkerSocket {
         bRead.close();
         pWrite.close();
         soc.close();
+        s.close();
     }
 }

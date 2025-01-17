@@ -23,6 +23,7 @@
   - [Analyse](#analyse)
     - [MasterSocket](#mastersocket)
     - [WorkerSocket](#workersocket)
+  - [Fonctionnement](#fonctionnement)
 - [Conclusion](#conclusion)
 
 ## Introduction
@@ -246,5 +247,13 @@ Ensuite, il va attendre le message du master afin de faire le travail demandé.
 
 - Si le message est `y`, le worker va générer des points et renvoyer le nombre de points dans le quart de disque.  
 - Si le message est `END` le worker va stopper la communication avec le master et fermer le socket.  
+
+### Fonctionnement
+
+Le master envoie le nombre d'itégration que doit faire le worker.  
+Ensuite le worker doit renvoyer le nombre de points dans le quart de disque.  
+Le master va ensuite calculer $\Pi$ grâce aux données reçues.  
+
+> :warning: il ne faut pas oublier de réinitialiser le nombre de points dans le quart de disque dans le master après chaque expérience.  
 
 ## Conclusion

@@ -103,6 +103,8 @@ public class MasterSocket {
 			} catch (IOException ioE) {
 				ioE.printStackTrace();
 			}
+
+			total = 0; // reset total
 		}
 
 		for (int i = 0; i < numWorkers; i++) {
