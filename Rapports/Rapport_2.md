@@ -4,6 +4,27 @@
 > INF3-FA  
 > 2024-2025  
 
+- [Introduction](#introduction)
+- [Calcul de $\\Pi$ par une méthode de Monte Carlo (MC)](#calcul-de-pi-par-une-méthode-de-monte-carlo-mc)
+  - [I. Généralités](#i-généralités)
+  - [II. Parallélisation](#ii-parallélisation)
+- [Shared](#shared)
+  - [Conception](#conception)
+    - [Pi](#pi)
+    - [Assignment](#assignment)
+  - [Assignment102 - PiMonteCarlo](#assignment102---pimontecarlo)
+  - [Pi - PiMonteCarlo](#pi---pimontecarlo)
+  - [Performance des programmes parallèle](#performance-des-programmes-parallèle)
+    - [Strong scaling](#strong-scaling)
+      - [Calcul accélération de Pi](#calcul-accélération-de-pi)
+      - [Calcul accélération de Assignment102](#calcul-accélération-de-assignment102)
+    - [Weak scaling](#weak-scaling)
+- [Socket](#socket)
+  - [Analyse](#analyse)
+    - [MasterSocket](#mastersocket)
+    - [WorkerSocket](#workersocket)
+- [Conclusion](#conclusion)
+
 ## Introduction
 
 ## Calcul de $\Pi$ par une méthode de Monte Carlo (MC)
@@ -119,26 +140,21 @@ sommer ncible_array dans n_cible (2)
 calculer pi (3)
 ```
 
-## Conception
+## Shared
 
-### Shared
+### Conception
 
 #### Pi
 
 ![Diagramme de classes](./assets/Pi.jpg)  
-**Figure 1** : Diagramme de classes de Pi  
+**Figure 2** : Diagramme de classes de Pi  
 
 #### Assignment
 
 ![Diagramme de classes](./assets/Assignment.jpg)
-**Figure 2** : Diagramme de classes de Assignment
+**Figure 3** : Diagramme de classes de Assignment
 
-### Suite - Socket
-
-![Diagramme de classes](./assets/socket.jpg)
-**Figure 3** : Diagramme de classes de Suite
-
-## Assignment102 - PiMonteCarlo
+### Assignment102 - PiMonteCarlo
 
 Dans `PiMonteCarlo`, notre `n_cible` du pseudo-code est `nAtomSuccess`.  
 :warning: `worker` n'est pas un worker du paradigme `Master-Worker` mais seulement un runnable, donc une tâche.  
@@ -149,7 +165,7 @@ La fonction `getPi()` est la fonction qui effectue la méthode de Monte Carlo.
 `ExecutorService` est un support de thread et `Thread` est un support de tâche.  
 `Executors.newWorkStealingPool()` permet de créer un pool (un groupe) de threads et quand un thread termine, il n'est pas détruit mais réutilisé.  
 
-## Pi - PiMonteCarlo
+### Pi - PiMonteCarlo
 
 Le code suit un paradigme `Master-Worker`.  
 `Callable` est une fonction paramétré qui retourne une valeur précisée, contrairement à `Runnable` qui retourne `void`.  
@@ -157,11 +173,11 @@ Le code suit un paradigme `Master-Worker`.
 Cette fois ci, on utilise `Executors.newFixedThreadPool(numWorkers)` qui permet de créer un groupe de threads de la taille précisée.  
 On stocke les résultats obtenu dans une liste de `Future<Long>`. Cette liste est une liste de résultats futurs. Derrière on récupère les résultats avec `future.get()`. Il récupère les résultats d'un thread, on ne sait pas quand est-ce qu'on va les récupérer.  
 
-## Performance des programmes parallèle
+### Performance des programmes parallèle
 
-### Strong scaling
+#### Strong scaling
 
-#### Calcul accélération de Pi
+##### Calcul accélération de Pi
 
 | Processus | Nombre d'intérations |
 | :-------: | -------------------- |
@@ -177,7 +193,7 @@ ${T_2 = \frac{ntot}{2} * T_i}$
 
 ${T_p = \frac{ntot}{p} * T_i}$
 
-#### Calcul accélération de Assignment102
+##### Calcul accélération de Assignment102
 
 | Processus | Nombre d'intérations                              |
 | :-------: | ------------------------------------------------- |
@@ -196,7 +212,7 @@ ${T_p = \frac{ntot}{p} * T_i + \frac{3}{4} * ntot}$
 => ${T_p > T_1}$  
 ${S_p = \frac{T_1}{T_P} < 1}$
 
-### Weak scaling
+#### Weak scaling
 
 On fixe la taille / la charge par processus.  
 
@@ -207,5 +223,28 @@ ${T_1 \simeq T_p}$
 *(insérer courbe)*  
 
 La courbe verte reste proche de 1 en fonction du nombre de processus (un ordinateur avec 4 coeurs aura une cours de 1 jusque 4 et après ça redescend doucement).
+
+## Socket
+
+### Analyse
+
+![Diagramme de classes](./assets/socket.jpg)
+**Figure 4** : Diagramme de classes de Suite
+
+#### MasterSocket
+
+Dans un premier temps, le master s'occuper d'initialiser tous les workers pour ensuite créer leur socket. Il défini le l'ip et le port de chacun et ajoute un `reader` et un `writer` pour chaque worker.  
+Puis il va envoyer un message à chaque worker pour leur dire de travailler. Une fois cela fait il va lire tous les résultats des workers. Une fois lu, il va faire le calcul de Pi grâce aux données reçues.  
+
+Pour finir il indique à tous les workers de s'arrêter et ferme les sockets.  
+
+#### WorkerSocket
+
+Le worker va initialiser un ServerSocket avec le port donné par le master.  
+Il va instancier un `reader` et un `writer` pour communiquer avec le master.  
+Ensuite, il va attendre le message du master afin de faire le travail demandé.
+
+- Si le message est `y`, le worker va générer des points et renvoyer le nombre de points dans le quart de disque.  
+- Si le message est `END` le worker va stopper la communication avec le master et fermer le socket.  
 
 ## Conclusion
