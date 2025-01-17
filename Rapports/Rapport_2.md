@@ -23,7 +23,9 @@
   - [Analyse](#analyse)
     - [MasterSocket](#mastersocket)
     - [WorkerSocket](#workersocket)
-  - [Fonctionnement](#fonctionnement)
+  - [Calcul de $\\Pi$ par MC](#calcul-de-pi-par-mc)
+  - [Message à renvoyer](#message-à-renvoyer)
+  - [Reception du message](#reception-du-message)
 - [Conclusion](#conclusion)
 
 ## Introduction
@@ -235,7 +237,7 @@ La courbe verte reste proche de 1 en fonction du nombre de processus (un ordinat
 #### MasterSocket
 
 Dans un premier temps, le master s'occuper d'initialiser tous les workers pour ensuite créer leur socket. Il défini le l'ip et le port de chacun et ajoute un `reader` et un `writer` pour chaque worker.  
-Puis il va envoyer un message à chaque worker pour leur dire de travailler. Une fois cela fait il va lire tous les résultats des workers. Une fois lu, il va faire le calcul de Pi grâce aux données reçues.  
+Puis il va envoyer un message à chaque worker pour leur dire le nombre d'itération à faire. Une fois cela fait il va lire tous les résultats des workers. Une fois lu, il va faire le calcul de Pi grâce aux données reçues.  
 
 Pour finir il indique à tous les workers de s'arrêter et ferme les sockets.  
 
@@ -248,12 +250,43 @@ Ensuite, il va attendre le message du master afin de faire le travail demandé.
 - Si le message est `y`, le worker va générer des points et renvoyer le nombre de points dans le quart de disque.  
 - Si le message est `END` le worker va stopper la communication avec le master et fermer le socket.  
 
-### Fonctionnement
+### Calcul de $\Pi$ par MC
 
-Le master envoie le nombre d'itégration que doit faire le worker.  
-Ensuite le worker doit renvoyer le nombre de points dans le quart de disque.  
-Le master va ensuite calculer $\Pi$ grâce aux données reçues.  
+Dans le worker, il faut ajouter ce code après la récupération du message du master :  
 
-> :warning: il ne faut pas oublier de réinitialiser le nombre de points dans le quart de disque dans le master après chaque expérience.  
+```java
+int totalCount = Integer.parseInt(str);
+int ncible = 0;
+for (int i = 0; i < totalCount; i++) {
+    double x = Math.random();
+    double y = Math.random();
+    if (x * x + y * y <= 1) {
+        ncible++;
+    }
+}
+```
+
+### Message à renvoyer
+
+Le worker doit renvoyer le nombre de points dans le quart de disque.  
+Pour cela, il doit renvoyer un message de type `String` avec le nombre de points.  
+
+```java
+pWrite.println(ncible);
+```
+
+### Reception du message
+
+Le master doit récupérer le message du worker, soit le nombre de points dans le quart de disque.  
+Ensuite il a simplement à additionner tous les résultats renvoyés par les workers et faire le calcul de $\Pi$.  
+
+```java
+for (int i = 0; i < numWorkers; i++) {
+    total += Integer.parseInt(tab_total_workers[i]);
+}
+pi = 4.0 * total / totalCount / numWorkers;
+```
+
+> :warning: il ne faut pas oublier de réinitialiser dans le master le nombre de points dans le quart de disque après chaque expérience.  
 
 ## Conclusion
