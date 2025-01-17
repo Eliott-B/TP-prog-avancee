@@ -38,15 +38,15 @@ public class MasterSocket {
 			ioE.printStackTrace();
 		}
 
-		for (int i = 0; i < numWorkers; i++) {
-			System.out.println("Enter worker" + i + " port : ");
-			try {
-				s = bufferRead.readLine();
-				System.out.println("You select " + s);
-			} catch (IOException ioE) {
-				ioE.printStackTrace();
-			}
-		}
+		// for (int i = 0; i < numWorkers; i++) {
+		// System.out.println("Enter worker" + i + " port : ");
+		// try {
+		// s = bufferRead.readLine();
+		// System.out.println("You select " + s);
+		// } catch (IOException ioE) {
+		// ioE.printStackTrace();
+		// }
+		// }
 
 		// create worker's socket
 		for (int i = 0; i < numWorkers; i++) {
