@@ -133,6 +133,11 @@ calculer pi (3)
 ![Diagramme de classes](./assets/Assignment.jpg)
 **Figure 2** : Diagramme de classes de Assignment
 
+### Suite - Socket
+
+![Diagramme de classes](./assets/socket.jpg)
+**Figure 3** : Diagramme de classes de Suite
+
 ## Assignment102 - PiMonteCarlo
 
 Dans `PiMonteCarlo`, notre `n_cible` du pseudo-code est `nAtomSuccess`.  
