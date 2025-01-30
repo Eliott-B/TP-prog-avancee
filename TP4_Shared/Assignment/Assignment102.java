@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
+
 class PiMonteCarlo {
 	AtomicInteger nAtomSuccess;
 	int nThrows;
@@ -22,14 +23,16 @@ class PiMonteCarlo {
 				nAtomSuccess.incrementAndGet();
 		}
 	}
+
 	public PiMonteCarlo(int i, int iProcessors) {
 		this.nAtomSuccess = new AtomicInteger(0);
 		this.nThrows = i;
 		this.value = 0;
 		this.nProcessors = iProcessors;
 	}
+
 	public double getPi() {
-//		int nProcessors = Runtime.getRuntime().availableProcessors();
+		// int nProcessors = Runtime.getRuntime().availableProcessors();
 		ExecutorService executor = Executors.newWorkStealingPool(nProcessors);
 		for (int i = 1; i <= nThrows; i++) {
 			Runnable worker = new MonteCarlo();
@@ -42,6 +45,7 @@ class PiMonteCarlo {
 		return value;
 	}
 }
+
 public class Assignment102 {
 	public static void main(String[] args) throws IOException {
 		int nTot = Integer.parseInt(args[0]);
@@ -58,10 +62,10 @@ public class Assignment102 {
 		long time = (stopTime - startTime);
 		System.out.println("Time Duration (ms): " + time);
 
-		File file = new File("data\\out_Assigment102_G26_4c.txt");
-		if (! file.exists()) {
-            file.createNewFile();
-        }
+		File file = new File("data\\out_Assignment102_G26_4c_" + nTot + ".txt");
+		if (!file.exists()) {
+			file.createNewFile();
+		}
 		FileWriter stream = new FileWriter(file, true);
 		stream.write(err + " " + nTot + " " + nbProcesses + " " + time + "\n");
 		stream.close();
