@@ -1,5 +1,13 @@
 import java.io.*;
 import java.net.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 /**
  * Worker is a server. It computes PI by Monte Carlo method and sends
@@ -17,7 +25,6 @@ public class WorkerSocket {
 
         if (!("".equals(args[0])))
             port = Integer.parseInt(args[0]);
-        System.out.println(port);
         ServerSocket s = new ServerSocket(port);
         System.out.println("Server started on port " + port);
         Socket soc = s.accept();
@@ -35,14 +42,15 @@ public class WorkerSocket {
 
                 // compute
                 int totalCount = Integer.parseInt(str);
-                int ncible = 0;
-                for (int i = 0; i < totalCount; i++) {
-                    double x = Math.random();
-                    double y = Math.random();
-                    if (x * x + y * y <= 1) {
-                        ncible++;
-                    }
-                }
+                // int ncible = 0;
+                // for (int i = 0; i < totalCount; i++) {
+                // double x = Math.random();
+                // double y = Math.random();
+                // if (x * x + y * y <= 1) {
+                // ncible++;
+                // }
+                // }
+                long ncible = new Master().doRun(totalCount, 1);
 
                 pWrite.println(ncible); // send number of points in quarter of disk
             } else {
@@ -53,5 +61,55 @@ public class WorkerSocket {
         pWrite.close();
         soc.close();
         s.close();
+    }
+}
+
+class Master {
+    public long doRun(int totalCount, int numWorkers) throws InterruptedException, ExecutionException, IOException {
+
+        // Create a collection of tasks
+        List<Callable<Long>> tasks = new ArrayList<Callable<Long>>();
+        for (int i = 0; i < numWorkers; ++i) {
+            tasks.add(new Worker(totalCount));
+        }
+
+        // Run them and receive a collection of Futures
+        ExecutorService exec = Executors.newFixedThreadPool(numWorkers);
+        List<Future<Long>> results = exec.invokeAll(tasks);
+        long total = 0;
+
+        // Assemble the results.
+        for (Future<Long> f : results) {
+            // Call to get() is an implicit barrier. This will block
+            // until result from corresponding worker is ready.
+            total += f.get();
+        }
+
+        exec.shutdown();
+        return total;
+    }
+}
+
+/**
+ * Task for running the Monte Carlo simulation.
+ */
+class Worker implements Callable<Long> {
+    private int numIterations;
+
+    public Worker(int num) {
+        this.numIterations = num;
+    }
+
+    @Override
+    public Long call() {
+        long circleCount = 0;
+        Random prng = new Random();
+        for (int j = 0; j < numIterations; j++) {
+            double x = prng.nextDouble();
+            double y = prng.nextDouble();
+            if ((x * x + y * y) < 1)
+                ++circleCount;
+        }
+        return circleCount;
     }
 }
