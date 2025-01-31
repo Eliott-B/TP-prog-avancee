@@ -28,6 +28,7 @@
   - [Reception du message](#reception-du-message)
   - [Socket](#socket)
   - [Réutilisation de Pi](#réutilisation-de-pi)
+  - [Automatisation de MasterSocket et WorkerSocket](#automatisation-de-mastersocket-et-workersocket)
 - [Conclusion](#conclusion)
 
 ## Introduction
@@ -307,5 +308,16 @@ pWrite.println(ncible); // send number of points in quarter of disk
 ```
 
 Premièrement cela permet de réutiliser du code existant. Mais cela permet aussi d'implémenter du parallélisme à 2 niveaux. Le premier niveau met en parallèle les différentes machines et le deuxième niveau met en parallèle les différents coeurs de chaque machine.
+
+### Automatisation de MasterSocket et WorkerSocket
+
+Pour automatiser le lancement de `MasterSocket` et `WorkerSocket` pour les utiliser dans un script Python afin de calculer les performances.  
+Il faut retirer la routine qui demande le nombre de Worker dans `MasterSocket` et les entrer directement dans les arguments :
+
+```java
+totalCount = Integer.parseInt(args[0]);
+if (args.length > 1)
+  numWorkers = Integer.parseInt(args[1]);
+```
 
 ## Conclusion

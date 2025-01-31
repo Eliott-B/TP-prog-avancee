@@ -23,20 +23,14 @@ public class MasterSocket {
 
 		int numWorkers = maxServer;
 		BufferedReader bufferRead = new BufferedReader(new InputStreamReader(System.in));
-		String s; // for bufferRead
 
 		System.out.println("#########################################");
 		System.out.println("# Computation of PI by MC method        #");
 		System.out.println("#########################################");
 
-		System.out.println("\n How many workers for computing PI (< maxServer): ");
-		try {
-			s = bufferRead.readLine();
-			numWorkers = Integer.parseInt(s);
-			System.out.println(numWorkers);
-		} catch (IOException ioE) {
-			ioE.printStackTrace();
-		}
+		totalCount = Integer.parseInt(args[0]);
+		if (args.length > 1)
+			numWorkers = Integer.parseInt(args[1]);
 
 		// for (int i = 0; i < numWorkers; i++) {
 		// System.out.println("Enter worker" + i + " port : ");
@@ -82,7 +76,7 @@ public class MasterSocket {
 			for (int i = 0; i < numWorkers; i++) {
 				total += Integer.parseInt(tab_total_workers[i]);
 			}
-			pi = 4.0 * total / totalCount / numWorkers;
+			pi = 4.0 * total / totalCount;
 
 			stopTime = System.currentTimeMillis();
 
