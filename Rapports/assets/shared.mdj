@@ -367,7 +367,7 @@
 											"font": "Arial;13;1",
 											"left": 389,
 											"top": 311,
-											"width": 343.33837890625,
+											"width": 440.53369140625,
 											"height": 13,
 											"text": "Master"
 										},
@@ -402,7 +402,7 @@
 									"font": "Arial;13;0",
 									"left": 384,
 									"top": 304,
-									"width": 353.33837890625,
+									"width": 450.53369140625,
 									"height": 25,
 									"stereotypeLabel": {
 										"$ref": "AAAAAAGTdzB93mH2dRc="
@@ -429,7 +429,7 @@
 									"font": "Arial;13;0",
 									"left": 384,
 									"top": 329,
-									"width": 353.33837890625,
+									"width": 450.53369140625,
 									"height": 10
 								},
 								{
@@ -454,16 +454,16 @@
 											"font": "Arial;13;0",
 											"left": 389,
 											"top": 344,
-											"width": 343.33837890625,
+											"width": 440.53369140625,
 											"height": 13,
-											"text": "+doRun(totalCount: int, numWorkers: int): long",
+											"text": "+doRun(totalCount: int, numWorkers: int, writeOutFile: boolean = false): long",
 											"horizontalAlignment": 0
 										}
 									],
 									"font": "Arial;13;0",
 									"left": 384,
 									"top": 339,
-									"width": 353.33837890625,
+									"width": 450.53369140625,
 									"height": 23
 								},
 								{
@@ -503,7 +503,7 @@
 							"containerChangeable": true,
 							"left": 384,
 							"top": 304,
-							"width": 353.33837890625,
+							"width": 450.53369140625,
 							"height": 58,
 							"nameCompartment": {
 								"$ref": "AAAAAAGTdzB93mH1T68="
@@ -1927,6 +1927,16 @@
 										"$ref": "AAAAAAGTdzQSYWKnZr0="
 									},
 									"direction": "return"
+								},
+								{
+									"_type": "UMLParameter",
+									"_id": "AAAAAAGUu8Y/ZrQZjv4=",
+									"_parent": {
+										"$ref": "AAAAAAGTdzEHOGIcALQ="
+									},
+									"name": "writeOutFile",
+									"type": "boolean",
+									"defaultValue": "false"
 								}
 							]
 						}
