@@ -19,13 +19,15 @@
       - [Calcul accélération de Pi](#calcul-accélération-de-pi)
       - [Calcul accélération de Assignment102](#calcul-accélération-de-assignment102)
     - [Weak scaling](#weak-scaling)
-- [Socket](#socket)
+- [Master Worker w Socket](#master-worker-w-socket)
   - [Analyse](#analyse)
     - [MasterSocket](#mastersocket)
     - [WorkerSocket](#workersocket)
   - [Calcul de $\\Pi$ par MC](#calcul-de-pi-par-mc)
   - [Message à renvoyer](#message-à-renvoyer)
   - [Reception du message](#reception-du-message)
+  - [Socket](#socket)
+  - [Réutilisation de Pi](#réutilisation-de-pi)
 - [Conclusion](#conclusion)
 
 ## Introduction
@@ -227,7 +229,7 @@ ${T_1 \simeq T_p}$
 
 La courbe verte reste proche de 1 en fonction du nombre de processus (un ordinateur avec 4 coeurs aura une cours de 1 jusque 4 et après ça redescend doucement).
 
-## Socket
+## Master Worker w Socket
 
 ### Analyse
 
@@ -288,5 +290,22 @@ pi = 4.0 * total / totalCount / numWorkers;
 ```
 
 > :warning: il ne faut pas oublier de réinitialiser dans le master le nombre de points dans le quart de disque après chaque expérience.  
+
+### Socket
+
+### Réutilisation de Pi
+
+Afin d'éviter d'avoir du code dupliqué. On peut réutiliser le package `Pi` pour obtenir le nombre de points dans la cible.  
+Pour cela, il faut importer le package `TP4_Shared.Pi.Master` dans `WorkerSocket.java`. Dans la fonction `main` de `WorkerSocket`, il faut appeler la fonction `doRun()` de la classe `Master` :
+
+```java
+int totalCount = Integer.parseInt(str);
+int numWorkers = 1;
+long ncible = new Master().doRun(totalCount / numWorkers, numWorkers);
+
+pWrite.println(ncible); // send number of points in quarter of disk
+```
+
+Premièrement cela permet de réutiliser du code existant. Mais cela permet aussi d'implémenter du parallélisme à 2 niveaux. Le premier niveau met en parallèle les différentes machines et le deuxième niveau met en parallèle les différents coeurs de chaque machine.
 
 ## Conclusion
