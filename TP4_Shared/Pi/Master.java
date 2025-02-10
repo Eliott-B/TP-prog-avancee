@@ -17,10 +17,10 @@ import java.util.concurrent.Future;
  */
 public class Master {
     public long doRun(int totalCount, int numWorkers) throws InterruptedException, ExecutionException, IOException {
-        return doRun(totalCount, numWorkers, false);
+        return doRun(totalCount, numWorkers, false, "");
     }
 
-    public long doRun(int totalCount, int numWorkers, boolean writeOutFile)
+    public long doRun(int totalCount, int numWorkers, boolean writeOutFile, String fileSubName)
             throws InterruptedException, ExecutionException, IOException {
 
         long startTime = System.currentTimeMillis();
@@ -55,7 +55,7 @@ public class Master {
         System.out.println("Time Duration (ms): " + time + "\n");
 
         if (writeOutFile) {
-            File file = new File("data\\out_Pi_G26_4c_" + totalCount * numWorkers + ".txt");
+            File file = new File("data\\out_Pi_G26_4c_" + fileSubName + ".txt");
             if (!file.exists()) {
                 file.createNewFile();
             }

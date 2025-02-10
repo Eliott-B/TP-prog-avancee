@@ -8,7 +8,8 @@ public class Pi {
 	public static void main(String[] args) throws Exception {
 		int nTotByWorkers = Integer.parseInt(args[0]);
 		int nWorkers = Integer.parseInt(args[1]);
+		String fileSubName = args[2];
 		long total = 0;
-		total = new Master().doRun(nTotByWorkers, nWorkers, true);
+		total = new Master().doRun(nTotByWorkers, nWorkers, true, fileSubName);
 	}
 }

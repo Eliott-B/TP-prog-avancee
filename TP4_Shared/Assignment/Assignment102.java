@@ -50,6 +50,8 @@ public class Assignment102 {
 	public static void main(String[] args) throws IOException {
 		int nTot = Integer.parseInt(args[0]);
 		int nbProcesses = Integer.parseInt(args[1]);
+		String fileSubName = args[2];
+
 		PiMonteCarlo PiVal = new PiMonteCarlo(nTot, nbProcesses);
 		long startTime = System.currentTimeMillis();
 		double value = PiVal.getPi();
@@ -62,7 +64,7 @@ public class Assignment102 {
 		long time = (stopTime - startTime);
 		System.out.println("Time Duration (ms): " + time);
 
-		File file = new File("data\\out_Assignment102_G26_4c_" + nTot + ".txt");
+		File file = new File("data\\out_Assignment102_G26_4c_" + fileSubName + ".txt");
 		if (!file.exists()) {
 			file.createNewFile();
 		}
