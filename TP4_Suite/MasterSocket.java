@@ -81,22 +81,31 @@ public class MasterSocket {
 			stopTime = System.currentTimeMillis();
 
 			System.out.println("\nPi : " + pi);
-			System.out.println("Error: " + (Math.abs((pi - Math.PI)) / Math.PI) + "\n");
+			double err = Math.abs((pi - Math.PI)) / Math.PI;
+			System.out.println("Error: " + err + "\n");
 
 			System.out.println("Ntot: " + totalCount * numWorkers);
 			System.out.println("Available processors: " + numWorkers);
-			System.out.println("Time Duration (ms): " + (stopTime - startTime) + "\n");
+			long time = stopTime - startTime;
+			System.out.println("Time Duration (ms): " + time + "\n");
 
-			System.out.println((Math.abs((pi - Math.PI)) / Math.PI) + " " + totalCount * numWorkers + " " + numWorkers
-					+ " " + (stopTime - startTime));
+			System.out.println(err + " " + totalCount * numWorkers + " " + numWorkers + " " + time);
 
-			System.out.println("\n Repeat computation (y/N): ");
-			try {
-				message_repeat = bufferRead.readLine();
-				System.out.println(message_repeat);
-			} catch (IOException ioE) {
-				ioE.printStackTrace();
+			File file = new File("TP4_Suite\\data\\out_MasterSocket_G26_4c.txt");
+			if (!file.exists()) {
+				file.createNewFile();
 			}
+			FileWriter stream = new FileWriter(file, true);
+			stream.write(err + " " + totalCount * numWorkers + " " + numWorkers + " " + time + "\n");
+			stream.close();
+
+			// System.out.println("\n Repeat computation (y/N): ");
+			// try {
+				message_repeat = "n";
+				System.out.println(message_repeat);
+			// } catch (IOException ioE) {
+			// 	ioE.printStackTrace();
+			// }
 
 			total = 0; // reset total
 		}
