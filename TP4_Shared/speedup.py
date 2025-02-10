@@ -15,7 +15,14 @@ def compile_java_file(java_file):
     try:
         print(f"Compiling {abs_path}...")
         compile_result = subprocess.run(
-            ["javac", "-d", root_dir, abs_path],  # Compile to root directory
+            [
+                "javac",
+                "-cp",
+                root_dir,
+                "-d",
+                root_dir,
+                abs_path,
+            ],  # Compile to root directory
             capture_output=True,
             text=True,
         )
@@ -28,13 +35,7 @@ def compile_java_file(java_file):
         print(f"Error: {str(e)}")
 
 
-def run_java_file(java_file, n, processus):
-    # if not os.path.exists(java_file):
-    #     raise FileNotFoundError(f"Java file not found: {java_file}")
-
-    if not isinstance(n, str) or not isinstance(processus, str):
-        n, processus = str(n), str(processus)
-
+def run_java_file(java_file, n, processus, fileSubName):
     # Setup paths
     current_dir = os.getcwd()
     parent_dir = os.path.dirname(current_dir)
@@ -48,7 +49,15 @@ def run_java_file(java_file, n, processus):
     try:
         print(f"Running {main_class} with n={n}, processus={processus}")
         result = subprocess.run(
-            ["java", "-cp", parent_dir, main_class, str(n), str(processus)],
+            [
+                "java",
+                "-cp",
+                parent_dir,
+                main_class,
+                str(n),
+                str(processus),
+                fileSubName,
+            ],
             capture_output=True,
             text=True,
             cwd=current_dir,
@@ -144,11 +153,65 @@ def calculate_speedup(resultsPi):
     plt.axis([0.5, 12.5, 0.5, 12.5])
 
     plt.grid(True)
-    plt.show()
+    return plt
+
+
+def calculate_weak_speedup(resultsPi):
+    # Plot results
+    plt.figure(figsize=(12, 6))
+    plt.plot([1, 12], [1, 1], "r--", label="Perfect Efficiency")
+
+    for total in resultsPi.keys():
+        # Group by processors
+        processor_groups = {}
+        for result in resultsPi[total]:
+            if result.processors not in processor_groups:
+                processor_groups[result.processors] = []
+            processor_groups[result.processors].append(result)
+
+        # Calculate average times and speedups
+        processors = sorted(processor_groups.keys())
+        avg_speedups = []
+
+        # Get T1 (sequential time with 1 processor)
+        T1_results = processor_groups[1]
+        T1 = sum(r.time for r in T1_results) / len(T1_results)
+
+        for p in processors:
+            results = processor_groups[p]
+            Tp = sum(r.time for r in results) / len(results)
+            speedup = T1 / Tp
+            avg_speedups.append(speedup)
+
+        plt.plot(
+            processors,
+            avg_speedups,
+            marker="o",
+            linestyle="-",
+            label="Speedup " + str(total),
+        )
+
+    plt.xlabel("Processors")
+    plt.ylabel("Sp")
+    plt.title("Weak Scaling Efficiency")
+    plt.legend()
+
+    # Ajuster les graduations pour l'efficacité
+    plt.yticks(range(0, 7))
+    plt.xticks(range(0, 13))
+
+    # Force aspect ratio and starting point
+    plt.axis("equal")
+    plt.axis([0, 12.5, 0, 6.5])
+
+    plt.grid(True)
+    return plt
 
 
 if __name__ == "__main__":
     resultsPi = dict()
+    compile_java_file("Pi/Worker.java")
+    compile_java_file("Pi/Master.java")
     compile_java_file("Pi/Pi.java")
     for total in [120000000, 1200000, 1200000000]:
         file = "data\\out_Pi_G26_4c_" + str(total) + ".txt"
@@ -156,21 +219,43 @@ if __name__ == "__main__":
             os.remove(file)
         for process in [1, 2, 3, 4, 5, 6, 8, 10, 12]:
             for i in range(10):
-                run_java_file("Pi", int(total / process), process)
+                run_java_file("Pi", int(total / process), process, str(total))
 
         resultsPi[total] = read_file(file)
 
     resultsAssigment = dict()
     compile_java_file("Assignment/Assignment102.java")
-    for total in [120000000, 1200000, 1200000000]:
+    for total in [120000000, 1200000]:
         file = "data\\out_Assignment102_G26_4c_" + str(total) + ".txt"
         if os.path.exists(file):
             os.remove(file)
         for process in [1, 2, 3, 4, 5, 6, 8, 10, 12]:
             for i in range(10):
-                run_java_file("Assignment102", total, process)
+                run_java_file("Assignment102", total, process, str(total))
 
         resultsAssigment[total] = read_file(file)
 
-    calculate_speedup(resultsPi)
-    calculate_speedup(resultsAssigment)
+    resultsPiWeak = dict()
+    for total in [120000000, 1200000]:
+        file = "data\\out_Pi_G26_4c_weak_" + str(total) + ".txt"
+        if os.path.exists(file):
+            os.remove(file)
+        for process in [1, 2, 3, 4, 5, 6, 8, 10, 12]:
+            for i in range(10):
+                run_java_file("Pi", total, process, "weak_" + str(total))
+
+        resultsPiWeak[total] = read_file(file)
+
+    pltPi = calculate_speedup(resultsPi)
+    pltPi.savefig("data\\speedup_pi.png")
+    pltWPi = calculate_weak_speedup(resultsPiWeak)
+    pltWPi.savefig("data\\weak_speedup_pi.png")
+    pltA102 = calculate_speedup(resultsAssigment)
+    pltA102.savefig("data\\speedup_assigment102.png")
+    # pltWA102 = calculate_weak_speedup(resultsAssigment)
+    # pltWA102.savefig("data\\weak_speedup_assigment102.png")
+
+    pltPi.show()
+    pltWPi.show()
+    pltA102.show()
+    # pltWA102.show()
