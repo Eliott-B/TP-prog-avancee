@@ -33,6 +33,8 @@
   - [Socket](#socket)
   - [Réutilisation de Pi](#réutilisation-de-pi)
   - [Automatisation de MasterSocket et WorkerSocket](#automatisation-de-mastersocket-et-workersocket)
+- [Performance des mesures](#performance-des-mesures)
+  - [Efficacité du temps de processus](#efficacité-du-temps-de-processus)
 - [Conclusion](#conclusion)
 
 ## Introduction
@@ -357,5 +359,27 @@ totalCount = Integer.parseInt(args[0]);
 if (args.length > 1)
   numWorkers = Integer.parseInt(args[1]);
 ```
+
+## Performance des mesures
+
+La mesure de la performance du code est décrite par la **norme ISO/IEC 25022**.  
+
+### Efficacité du temps de processus
+
+L'efficacité du temps de processus se calcul avec la formule suivante :  
+$X = T_t / T_a$  
+$T_t$ est le temps voulu (target time)  
+$T_a$ est le temps obtenu (actual time)  
+
+On peut noter que cette formule est similaire à celle de la scalabilité forte.  
+$T_t = T_1$ ($T_t$ est le temps de référence sur 1 processus)  
+$T_a = T_p$ dans une configuration p donnée  
+Donc $X = T_t / T_a \approx Sp$  
+
+Si le temps de référence est celui qu'on souhaite obtenir alors  
+$\widehat{T_p} / T_p = \frac{0,5}{0,75} = \frac{1}{2}*\frac{4}{3} = \frac{2}{3}$  
+exemple : si $T_1 = 1s$ alors $T_2 = 0,5s$  
+
+De plus, la formule : $\frac{(T_t-T_a)}{T_t}$ représente la différence entre la courbe de speedup et la courbe de référence.
 
 ## Conclusion
