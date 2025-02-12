@@ -19,6 +19,10 @@
       - [Calcul accélération de Pi](#calcul-accélération-de-pi)
       - [Calcul accélération de Assignment102](#calcul-accélération-de-assignment102)
     - [Weak scaling](#weak-scaling)
+  - [Calcul des performances](#calcul-des-performances)
+    - [Scalabilité forte Pi.java](#scalabilité-forte-pijava)
+    - [Scalabilité faible Pi.java](#scalabilité-faible-pijava)
+    - [Scalabilité forte Assignment102.java](#scalabilité-forte-assignment102java)
 - [Master Worker w Socket](#master-worker-w-socket)
   - [Analyse](#analyse)
     - [MasterSocket](#mastersocket)
@@ -230,12 +234,46 @@ ${T_1 \simeq T_p}$
 
 La courbe verte reste proche de 1 en fonction du nombre de processus (un ordinateur avec 4 coeurs aura une cours de 1 jusque 4 et après ça redescend doucement).
 
+### Calcul des performances
+
+#### Scalabilité forte Pi.java
+
+![Speedup Pi](./assets/speedup_pi.png)
+**Figure 4** : Scalabilité forte de Pi.java
+
+On remarque qu'au dessus de 8 processeurs pour les courbes verte et bleu le speedup est moins important. Cela est normal puisque l'ordinateur n'a que 4 coeurs et 8 threads.  
+
+On peut voir qu'avec 1 200 000 lancés le speedup est vraiment bas. Cela montre que le temps d'accès aux données est plus long que le temps nécessaire à l'exécution d'une itération donc la parallélisation n'est pas efficace. Cela s'explique parce que l'ordinateur a 3.6GHz soit 3.6 milliards cycles par seconde.  
+
+Au fur et à mesure la coubre bleu et la courbe verte s'écartent de la courbe idéale. Cela est normal puisque c'est le système d'exploitation qui gère le placement des processus sur les coeurs.  
+
+#### Scalabilité faible Pi.java
+
+![Weak speedup Pi](./assets/weak_speedup_pi.png)
+**Figure 5** : Scalabilité faible de Pi.java
+
+Pour la scalabilité faible de Pi.java, on peut voir que si on fixe le nombre d'itérations à 120 000 000 par processus, le speedup est proche de 1 jusque 8 processeurs. Ensuite il redescend.  
+C'est pareil avec 1 200 000 itérations par processus mais le speedup est plus bas pour les mêmes raisons que la scalabilité forte.  
+
+On ne peut pas faire cette expérience avec 1 200 000 000 itérations par processus car on tombera dans une erreur de type `OutOfMemoryError` de la part de la JVM. En effet, la JVM va allouer de la mémoire pour chaque processus même si on n'utilise pas de tableau.  
+
+#### Scalabilité forte Assignment102.java
+
+![Speedup Assignment102](./assets/speedup_assigment102.png)
+**Figure 6** : Scalabilité forte de Assignment102.java
+
+La scalabilité forte de Assignment102 est très mauvaise. On voit même qu'elle est presque pareil que la scalabilité faible de Pi.java. De plus, on voit que la courbe bleu est presque constante même au dessus des 8 processus. La courbe orange, elle, chute à 4 processus.  
+
+Cela montre que la parallélisation de ce code n'est pas efficace.  
+
+Le nombre d'itérations s'arrête à 120 000 000. Puisque le temps d'exécution est très long vu que la parrallélisation n'est pas efficace.  
+
 ## Master Worker w Socket
 
 ### Analyse
 
 ![Diagramme de classes](./assets/socket.jpg)
-**Figure 4** : Diagramme de classes de Suite
+**Figure 7** : Diagramme de classes de Suite
 
 #### MasterSocket
 
