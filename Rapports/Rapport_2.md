@@ -23,6 +23,10 @@
     - [Scalabilité forte Pi.java](#scalabilité-forte-pijava)
     - [Scalabilité faible Pi.java](#scalabilité-faible-pijava)
     - [Scalabilité forte Assignment102.java](#scalabilité-forte-assignment102java)
+  - [Analyse de l'erreur](#analyse-de-lerreur)
+    - [Erreur de Pi.java en scalabilité forte](#erreur-de-pijava-en-scalabilité-forte)
+    - [Erreur de Pi.java en scalabilité faible](#erreur-de-pijava-en-scalabilité-faible)
+    - [Erreur de Assignment102.java en scalabilité forte](#erreur-de-assignment102java-en-scalabilité-forte)
 - [Master Worker w Socket](#master-worker-w-socket)
   - [Analyse](#analyse)
     - [MasterSocket](#mastersocket)
@@ -269,6 +273,29 @@ La scalabilité forte de Assignment102 est très mauvaise. On voit même qu'elle
 Cela montre que la parallélisation de ce code n'est pas efficace.  
 
 Le nombre d'itérations s'arrête à 120 000 000. Puisque le temps d'exécution est très long vu que la parrallélisation n'est pas efficace.  
+
+### Analyse de l'erreur
+
+Pour calculer l'erreur il faut faire le calcul suivant :  
+$\epsilon = \frac{|\Pi_{exp} - \Pi_{th}|}{\Pi_{th}}$  
+
+Où $\Pi_{exp}$ est la valeur expérimentale de $\Pi$ et $\Pi_{th}$ est la valeur théorique de $\Pi$.  
+
+#### Erreur de Pi.java en scalabilité forte
+
+![Erreur Pi](./assets/error_pi.png)
+
+On peut voir que l'erreur diminue à chaque fois que le nombre d'itérations augmente. Cela est normal puisque plus on a d'itérations plus on a d'expériences et donc plus les résultats sont précis.  
+
+#### Erreur de Pi.java en scalabilité faible
+
+![Erreur Weak Pi](./assets/error_pi_weak.png)
+
+#### Erreur de Assignment102.java en scalabilité forte
+
+![Erreur Assignment102](./assets/error_assigment102.png)
+
+On peut voir que ici l'erreur est équivalente à celle de Pi.java pour $10^8$ itérations malgré le fait que la scalabilité est mauvaise. Cela montre que le code est correct mais que seulement la parallélisation n'est pas efficace.  
 
 ## Master Worker w Socket
 

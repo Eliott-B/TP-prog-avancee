@@ -6,6 +6,8 @@ import matplotlib.pyplot as plt
 import subprocess
 import os
 
+import numpy as np
+
 
 def compile_java_file(java_file):
     abs_path = os.path.abspath(java_file)
@@ -208,54 +210,104 @@ def calculate_weak_speedup(resultsPi):
     return plt
 
 
+def draw_error(resultsPi):
+    plt.figure(figsize=(12, 12))
+
+    for total in resultsPi.keys():
+        # Get processors and errors
+        iterations = []
+        errors = []
+        for result in resultsPi[total]:
+            iterations.append(result.tot)  # Use total iterations instead of processors
+            errors.append(result.err)
+
+        # Plot each error point
+        plt.scatter(
+            iterations,
+            errors,
+            alpha=0.5,
+            label=f"Error p={total}",
+        )
+
+    plt.xlabel("Number of iterations")
+    plt.ylabel("Relative Error")
+    plt.title("Error Distribution by Number of Iterations")
+    plt.legend()
+
+    # Set logarithmic scale for both axes
+    plt.xscale("log", base=10)
+    plt.yscale("log", base=10)
+
+    # Format ticks with scientific notation
+    ax = plt.gca()
+    ax.xaxis.set_major_formatter(
+        plt.FuncFormatter(lambda x, p: f"$10^{{{int(np.log10(x))}}}$")
+    )
+    ax.yaxis.set_major_formatter(
+        plt.FuncFormatter(lambda y, p: f"$10^{{{int(np.log10(y))}}}$")
+    )
+
+    plt.grid(True)
+    return plt
+
+
 if __name__ == "__main__":
     resultsPi = dict()
-    compile_java_file("Pi/Worker.java")
-    compile_java_file("Pi/Master.java")
-    compile_java_file("Pi/Pi.java")
+    # compile_java_file("Pi/Worker.java")
+    # compile_java_file("Pi/Master.java")
+    # compile_java_file("Pi/Pi.java")
     for total in [120000000, 1200000, 1200000000]:
-        file = "data\\out_Pi_G26_4c_" + str(total) + ".txt"
-        if os.path.exists(file):
-            os.remove(file)
-        for process in [1, 2, 3, 4, 5, 6, 8, 10, 12]:
-            for i in range(10):
-                run_java_file("Pi", int(total / process), process, str(total))
+        file = "data/out_Pi_G26_4c_" + str(total) + ".txt"
+        # if os.path.exists(file):
+        #     os.remove(file)
+        # for process in [1, 2, 3, 4, 5, 6, 8, 10, 12]:
+        #     for i in range(10):
+        #         run_java_file("Pi", int(total / process), process, str(total))
 
         resultsPi[total] = read_file(file)
 
     resultsAssigment = dict()
-    compile_java_file("Assignment/Assignment102.java")
+    # compile_java_file("Assignment/Assignment102.java")
     for total in [120000000, 1200000]:
-        file = "data\\out_Assignment102_G26_4c_" + str(total) + ".txt"
-        if os.path.exists(file):
-            os.remove(file)
-        for process in [1, 2, 3, 4, 5, 6, 8, 10, 12]:
-            for i in range(10):
-                run_java_file("Assignment102", total, process, str(total))
+        file = "data/out_Assignment102_G26_4c_" + str(total) + ".txt"
+        # if os.path.exists(file):
+        #     os.remove(file)
+        # for process in [1, 2, 3, 4, 5, 6, 8, 10, 12]:
+        #     for i in range(10):
+        #         run_java_file("Assignment102", total, process, str(total))
 
         resultsAssigment[total] = read_file(file)
 
     resultsPiWeak = dict()
     for total in [120000000, 1200000]:
-        file = "data\\out_Pi_G26_4c_weak_" + str(total) + ".txt"
-        if os.path.exists(file):
-            os.remove(file)
-        for process in [1, 2, 3, 4, 5, 6, 8, 10, 12]:
-            for i in range(10):
-                run_java_file("Pi", total, process, "weak_" + str(total))
+        file = "data/out_Pi_G26_4c_weak_" + str(total) + ".txt"
+        # if os.path.exists(file):
+        #     os.remove(file)
+        # for process in [1, 2, 3, 4, 5, 6, 8, 10, 12]:
+        #     for i in range(10):
+        #         run_java_file("Pi", total, process, "weak_" + str(total))
 
         resultsPiWeak[total] = read_file(file)
 
-    pltPi = calculate_speedup(resultsPi)
-    pltPi.savefig("data\\speedup_pi.png")
-    pltWPi = calculate_weak_speedup(resultsPiWeak)
-    pltWPi.savefig("data\\weak_speedup_pi.png")
-    pltA102 = calculate_speedup(resultsAssigment)
-    pltA102.savefig("data\\speedup_assigment102.png")
+    # pltPi = calculate_speedup(resultsPi)
+    # pltPi.savefig("data\\speedup_pi.png")
+    # pltWPi = calculate_weak_speedup(resultsPiWeak)
+    # pltWPi.savefig("data\\weak_speedup_pi.png")
+    # pltA102 = calculate_speedup(resultsAssigment)
+    # pltA102.savefig("data\\speedup_assigment102.png")
     # pltWA102 = calculate_weak_speedup(resultsAssigment)
     # pltWA102.savefig("data\\weak_speedup_assigment102.png")
+    pltErrorPi = draw_error(resultsPi)
+    pltErrorPi.savefig("data/error_pi.png")
+    pltErrorPiWeak = draw_error(resultsPiWeak)
+    pltErrorPiWeak.savefig("data/error_pi_weak.png")
+    pltErrorA102 = draw_error(resultsAssigment)
+    pltErrorA102.savefig("data/error_assigment102.png")
 
-    pltPi.show()
-    pltWPi.show()
-    pltA102.show()
+    # pltPi.show()
+    # pltWPi.show()
+    # pltA102.show()
     # pltWA102.show()
+    pltErrorPi.show()
+    pltErrorPiWeak.show()
+    pltErrorA102.show()
