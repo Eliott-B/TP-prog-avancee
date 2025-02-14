@@ -9,6 +9,7 @@ import TP4_Shared.Pi.Master;
 public class WorkerSocket {
     static int port = 25545; // default port
     private static boolean isRunning = true;
+    static int numWorkers = 1;
 
     /**
      * compute PI locally by MC and sends the number of points
@@ -21,6 +22,9 @@ public class WorkerSocket {
         ServerSocket s = new ServerSocket(port);
         System.out.println("Server started on port " + port);
         Socket soc = s.accept();
+
+        if (args.length > 1)
+            numWorkers = Integer.parseInt(args[1]);
 
         // BufferedReader bRead for reading message from Master
         BufferedReader bRead = new BufferedReader(new InputStreamReader(soc.getInputStream()));
@@ -35,7 +39,6 @@ public class WorkerSocket {
 
                 // compute
                 int totalCount = Integer.parseInt(str);
-                int numWorkers = 1;
                 long ncible = new Master().doRun(totalCount / numWorkers, numWorkers);
 
                 pWrite.println(ncible); // send number of points in quarter of disk
