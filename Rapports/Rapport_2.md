@@ -41,6 +41,7 @@
   - [Utilisation de `MasterSocket` et `WorkerSocket` sur plusieurs machines](#utilisation-de-mastersocket-et-workersocket-sur-plusieurs-machines)
 - [Performance des mesures](#performance-des-mesures)
   - [Efficacité du temps de processus](#efficacité-du-temps-de-processus)
+- [Travail en entreprise](#travail-en-entreprise)
 - [Conclusion](#conclusion)
 
 ## Introduction
@@ -504,5 +505,15 @@ $\widehat{T_p} / T_p = \frac{0,5}{0,75} = \frac{1}{2}*\frac{4}{3} = \frac{2}{3}$
 exemple : si $T_1 = 1s$ alors $T_2 = 0,5s$  
 
 De plus, la formule : $\frac{(T_t-T_a)}{T_t}$ représente la différence entre la courbe de speedup et la courbe de référence.
+
+## Travail en entreprise
+
+Lors de mon alternance à E2-CAD, j'ai pu faire face à des problèmes de performance d'un logiciel. Ce logiciel avait beaucoup de mal à faire toutes les boucles en un temps raisonnable (3000 à 7000 ittérations).  
+Dans chaque itération, le logiciel va chercher des informations dans une grosse structure de données (définie plus tôt par une librairie) et va ensuite modifier la donnée de l'itération.  
+Le logiciel est écrit en C# mono-thread. Il fonctionnait bien pour certain projet (5 minutes d'attente) mais pour d'autres il fallait attendre environ 3 heure.  
+
+Pour résoudre ce problème, j'ai analysé la boucle qui prenait du temps. J'ai pu voir que les ittérations étaient indépendantes et que les ressources critiques n'étaient pas nombreuses.  
+J'ai donc décidé de paralléliser la boucle. J'ai utilisé la librairie `System.Threading.Tasks` de C# pour paralléliser la boucle.  
+J'ai plusieurs ressources critiques mais je n'utilise pas les mêmes méthodes pour les sécuriser. Pour la plus part des ressources critiques, j'ai utilisé des `lock` mais pour le système de journaux d'activités j'ai utilisé une `BlockingCollection` qui est une file d'attente. J'écrivais donc les journaux d'activités après l'exécution de toutes les itérations grâce à la `BlockingCollection`.  
 
 ## Conclusion
