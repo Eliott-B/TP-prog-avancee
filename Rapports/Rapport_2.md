@@ -38,6 +38,7 @@
   - [Socket](#socket)
   - [Réutilisation de Pi](#réutilisation-de-pi)
   - [Automatisation de MasterSocket et WorkerSocket](#automatisation-de-mastersocket-et-workersocket)
+  - [Utilisation de `MasterSocket` et `WorkerSocket` sur plusieurs machines](#utilisation-de-mastersocket-et-workersocket-sur-plusieurs-machines)
 - [Performance des mesures](#performance-des-mesures)
   - [Efficacité du temps de processus](#efficacité-du-temps-de-processus)
 - [Conclusion](#conclusion)
@@ -465,6 +466,22 @@ totalCount = Integer.parseInt(args[0]);
 if (args.length > 1)
   numWorkers = Integer.parseInt(args[1]);
 ```
+
+### Utilisation de `MasterSocket` et `WorkerSocket` sur plusieurs machines
+
+> Pour les étapes suivantes il faut être sur le même réseau local et que les machines soient sur linux.
+
+Etapes à suivre pour utiliser `MasterSocket` et `WorkerSocket` sur plusieurs machines :  
+
+1. Cloner le projet sur chaque machine  
+2. Installer Java sur chaque machine (:warning: le JDK)  
+3. Désactiver le firewall de chaque machine  
+4. Changer l'adresse IP dans `MasterSocket` par l'adresse IP de la machine Worker  
+
+Ensuite il suffit seulement de lancer dans l'ordre :
+
+1. `WorkerSocket` sur chaque machine  
+2. `MasterSocket` sur la machine Master  
 
 ## Performance des mesures
 
