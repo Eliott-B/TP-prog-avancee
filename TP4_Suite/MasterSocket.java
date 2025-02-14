@@ -6,13 +6,16 @@ import java.net.*;
  * 
  */
 public class MasterSocket {
-	static int maxServer = 8;
-	static final int[] tab_port = { 25545, 25546, 25547, 25548, 25549, 25550, 25551, 25552 };
+	static int maxServer = 12;
+	static final int[] tab_port = { 25545, 25546, 25547, 25548, 25549, 25550, 25551, 25552, 25553, 25554, 25555,
+			25556 };
 	static String[] tab_total_workers = new String[maxServer];
 	static final String ip = "127.0.0.1";
 	static BufferedReader[] reader = new BufferedReader[maxServer];
 	static PrintWriter[] writer = new PrintWriter[maxServer];
 	static Socket[] sockets = new Socket[maxServer];
+
+	static String subFileName = "";
 
 	public static void main(String[] args) throws Exception {
 
@@ -31,6 +34,8 @@ public class MasterSocket {
 		totalCount = Integer.parseInt(args[0]);
 		if (args.length > 1)
 			numWorkers = Integer.parseInt(args[1]);
+		if (args.length > 2)
+			subFileName = args[2];
 
 		// for (int i = 0; i < numWorkers; i++) {
 		// System.out.println("Enter worker" + i + " port : ");
@@ -91,7 +96,7 @@ public class MasterSocket {
 
 			System.out.println(err + " " + totalCount * numWorkers + " " + numWorkers + " " + time);
 
-			File file = new File("TP4_Suite\\data\\out_MasterSocket_G26_4c.txt");
+			File file = new File("TP4_Suite\\data\\out_MasterSocket_G26_4c_" + subFileName + ".txt");
 			if (!file.exists()) {
 				file.createNewFile();
 			}
@@ -101,10 +106,10 @@ public class MasterSocket {
 
 			// System.out.println("\n Repeat computation (y/N): ");
 			// try {
-				message_repeat = "n";
-				System.out.println(message_repeat);
+			message_repeat = "n";
+			System.out.println(message_repeat);
 			// } catch (IOException ioE) {
-			// 	ioE.printStackTrace();
+			// ioE.printStackTrace();
 			// }
 
 			total = 0; // reset total
