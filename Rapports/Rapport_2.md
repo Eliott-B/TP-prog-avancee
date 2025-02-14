@@ -303,7 +303,9 @@ $\epsilon = \frac{|\Pi_{exp} - \Pi_{th}|}{\Pi_{th}}$
 
 Où $\Pi_{exp}$ est la valeur expérimentale de $\Pi$ et $\Pi_{th}$ est la valeur théorique de $\Pi$.  
 
-Grâce à notre fichier de sortie, que sort chaque programme, on peut dessiner les points des erreurs en fonction du nombre d'itérations.  
+Grâce à notre fichier de sortie, que sort chaque programme, on peut dessiner les points des erreurs en fonction du nombre d'itérations. On place des points sur des log10 pour avoir une meilleure visibilité.  
+
+Ici le calcul de l'erreur est pas très précis puisque l'algorithme de Monte Carlo est un algorithme probabiliste.  
 
 #### Erreur de Pi.java en scalabilité forte
 
@@ -387,6 +389,56 @@ pi = 4.0 * total / totalCount / numWorkers;
 > :warning: il ne faut pas oublier de réinitialiser dans le master le nombre de points dans le quart de disque après chaque expérience.  
 
 ### Socket
+
+Les sockets sont des objets qui permettent de communiquer entre deux machines.  
+Il y a deux types de sockets :
+
+- `ServerSocket` : serveur qui écoute un port donnée  
+- `Socket` : client qui se connecte à un serveur  
+
+Les deux machine communiquent en envoyant des messages. Ces messages passent souvent par des buffers.  
+Les sockets sont utilisées pour la communication en temps réel. Exemple : les jeux en ligne ou les chats.  
+
+Création d'un serveur :  
+
+```java
+ServerSocket serverSocket = new ServerSocket(1234); // 1234 est le port
+```
+
+Connection à un serveur :  
+
+```java
+Socket socket = new Socket("localhost", 1234); // localhost est l'ip du serveur, 1234 est le port
+```
+
+Ici on utilise un `ServerSocket` pour le worker et un `Socket` pour le master.  
+La connexion entre les 2 machines se stoppe quand le serveur coupe la communication.  
+
+Pour communiquer des messages le `MasterSocket` va utiliser `PrintWriter` et `BufferedReader` :  
+
+```java
+PrintWriter pWrite = new PrintWriter(new BufferWriter(new OutputStreamWriter(socket.getOutputStream())), true);
+BufferedReader bRead = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+```
+
+Pour lire un message :  
+
+```java
+String str = bRead.readLine();
+```
+
+Pour envoyer un message :  
+
+```java
+pWrite.println("Hello World");
+```
+
+Pour le `WorkerSocket` c'est la même chose mais avec un `ServerSocket` :  
+
+```java
+PrintWriter pWrite = new PrintWriter(new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()), true);
+BufferedReader bRead = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+```
 
 ### Réutilisation de Pi
 
