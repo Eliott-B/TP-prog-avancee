@@ -19,6 +19,7 @@
       - [Calcul accélération de Pi](#calcul-accélération-de-pi)
       - [Calcul accélération de Assignment102](#calcul-accélération-de-assignment102)
     - [Weak scaling](#weak-scaling)
+  - [Sortie de programme](#sortie-de-programme)
   - [Calcul des performances](#calcul-des-performances)
     - [Scalabilité forte Pi.java](#scalabilité-forte-pijava)
     - [Scalabilité faible Pi.java](#scalabilité-faible-pijava)
@@ -236,16 +237,37 @@ ${T_1 \simeq T_p}$
 
 => ${S_p \simeq 1}$
 
-*(insérer courbe)*  
+![Scalabilité faible](./assets/scalabilite_faible.png)
+**Figure 4** : Scalabilité faible
 
 La courbe verte reste proche de 1 en fonction du nombre de processus (un ordinateur avec 4 coeurs aura une cours de 1 jusque 4 et après ça redescend doucement).
 
+### Sortie de programme
+
+Afin de pouvoir analyser nos codes et de pouvoir comparer les performances de parallélisation, on a défini un format de fichier de sortie :
+
+```text
+error ntotal nprocessors time
+```
+
+- `error` : erreur de calcul de $\Pi$  
+- `ntotal` : nombre d'itérations total  
+- `nprocessors` : nombre de processus  
+- `time` : temps d'exécution en millisecondes  
+
+On demande le temps en milisecondes puisque nous utilisons Java et que la JVM ne nous permettra pas d'avoir des programmes s'exécutant en moins de 1ms.  
+
 ### Calcul des performances
+
+> :warning: Assignment102.java et Pi.java ne s'appellent pas de la même manière en ligne de commande.  
+>
+> - Assignment102.java prend en argument le nombre d'itérations total et le nombre de processus.  
+> - Pi.java prend en argument le nombre d'itérations par workers et le nombre de workers.  
 
 #### Scalabilité forte Pi.java
 
 ![Speedup Pi](./assets/speedup_pi.png)
-**Figure 4** : Scalabilité forte de Pi.java
+**Figure 5** : Scalabilité forte de Pi.java
 
 On remarque qu'au dessus de 8 processeurs pour les courbes verte et bleu le speedup est moins important. Cela est normal puisque l'ordinateur n'a que 4 coeurs et 8 threads.  
 
@@ -256,7 +278,7 @@ Au fur et à mesure la coubre bleu et la courbe verte s'écartent de la courbe i
 #### Scalabilité faible Pi.java
 
 ![Weak speedup Pi](./assets/weak_speedup_pi.png)
-**Figure 5** : Scalabilité faible de Pi.java
+**Figure 6** : Scalabilité faible de Pi.java
 
 Pour la scalabilité faible de Pi.java, on peut voir que si on fixe le nombre d'itérations à 120 000 000 par processus, le speedup est proche de 1 jusque 8 processeurs. Ensuite il redescend.  
 C'est pareil avec 1 200 000 itérations par processus mais le speedup est plus bas pour les mêmes raisons que la scalabilité forte.  
@@ -266,7 +288,7 @@ On ne peut pas faire cette expérience avec 1 200 000 000 itérations par proces
 #### Scalabilité forte Assignment102.java
 
 ![Speedup Assignment102](./assets/speedup_assigment102.png)
-**Figure 6** : Scalabilité forte de Assignment102.java
+**Figure 7** : Scalabilité forte de Assignment102.java
 
 La scalabilité forte de Assignment102 est très mauvaise. On voit même qu'elle est presque pareil que la scalabilité faible de Pi.java. De plus, on voit que la courbe bleu est presque constante même au dessus des 8 processus. La courbe orange, elle, chute à 4 processus.  
 
@@ -286,19 +308,19 @@ Grâce à notre fichier de sortie, que sort chaque programme, on peut dessiner l
 #### Erreur de Pi.java en scalabilité forte
 
 ![Erreur Pi](./assets/error_pi.png)
-**Figure 7** : Erreur de Pi.java en scalabilité forte
+**Figure 8** : Erreur de Pi.java en scalabilité forte
 
 On peut voir que l'erreur diminue à chaque fois que le nombre d'itérations augmente. Cela est normal puisque plus on a d'itérations plus on a d'expériences et donc plus les résultats sont précis.  
 
 #### Erreur de Pi.java en scalabilité faible
 
 ![Erreur Weak Pi](./assets/error_pi_weak.png)
-**Figure 8** : Erreur de Pi.java en scalabilité faible
+**Figure 9** : Erreur de Pi.java en scalabilité faible
 
 #### Erreur de Assignment102.java en scalabilité forte
 
 ![Erreur Assignment102](./assets/error_assigment102.png)
-**Figure 9** : Erreur de Assignment102.java en scalabilité forte
+**Figure 10** : Erreur de Assignment102.java en scalabilité forte
 
 On peut voir que ici l'erreur est équivalente à celle de Pi.java pour $10^8$ itérations malgré le fait que la scalabilité est mauvaise. Cela montre que le code est correct mais que seulement la parallélisation n'est pas efficace.  
 
@@ -307,7 +329,7 @@ On peut voir que ici l'erreur est équivalente à celle de Pi.java pour $10^8$ i
 ### Analyse
 
 ![Diagramme de classes](./assets/socket.jpg)
-**Figure 10** : Diagramme de classes de Suite
+**Figure 11** : Diagramme de classes de Suite
 
 #### MasterSocket
 
