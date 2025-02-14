@@ -281,19 +281,24 @@ $\epsilon = \frac{|\Pi_{exp} - \Pi_{th}|}{\Pi_{th}}$
 
 Où $\Pi_{exp}$ est la valeur expérimentale de $\Pi$ et $\Pi_{th}$ est la valeur théorique de $\Pi$.  
 
+Grâce à notre fichier de sortie, que sort chaque programme, on peut dessiner les points des erreurs en fonction du nombre d'itérations.  
+
 #### Erreur de Pi.java en scalabilité forte
 
 ![Erreur Pi](./assets/error_pi.png)
+**Figure 7** : Erreur de Pi.java en scalabilité forte
 
 On peut voir que l'erreur diminue à chaque fois que le nombre d'itérations augmente. Cela est normal puisque plus on a d'itérations plus on a d'expériences et donc plus les résultats sont précis.  
 
 #### Erreur de Pi.java en scalabilité faible
 
 ![Erreur Weak Pi](./assets/error_pi_weak.png)
+**Figure 8** : Erreur de Pi.java en scalabilité faible
 
 #### Erreur de Assignment102.java en scalabilité forte
 
 ![Erreur Assignment102](./assets/error_assigment102.png)
+**Figure 9** : Erreur de Assignment102.java en scalabilité forte
 
 On peut voir que ici l'erreur est équivalente à celle de Pi.java pour $10^8$ itérations malgré le fait que la scalabilité est mauvaise. Cela montre que le code est correct mais que seulement la parallélisation n'est pas efficace.  
 
@@ -302,7 +307,7 @@ On peut voir que ici l'erreur est équivalente à celle de Pi.java pour $10^8$ i
 ### Analyse
 
 ![Diagramme de classes](./assets/socket.jpg)
-**Figure 7** : Diagramme de classes de Suite
+**Figure 10** : Diagramme de classes de Suite
 
 #### MasterSocket
 
