@@ -168,10 +168,18 @@ calculer pi (3)
 ![Diagramme de classes](./assets/Pi.jpg)  
 **Figure 2** : Diagramme de classes de Pi  
 
+On a la classe `Worker` qui contient la méthode `Worker` et `run`. La classe implémente `Callable`.  
+On a la classe `Master` qui contient la méthode `doRun`. La classe dépende de `Worker`, `Executor` et `Future`.  
+On a la classe `Pi` qui contient la méthode `main`. La classe dépende de `Master`.  
+
 #### Assignment
 
 ![Diagramme de classes](./assets/Assignment.jpg)
 **Figure 3** : Diagramme de classes de Assignment
+
+On a la classe `PiMonteCarlo` qui contient les méthodes `PiMonteCarlo` et `getPi`. La classe dépend de `Executor` et utilise `AtomicInteger`.  
+On a la classe `MonteCarlo` qui contient la méthode `run`. La classe implémente `Runnable`. Cette classe est contenue dans `PiMonteCarlo`.  
+On a la classe `Assignment102` qui contient la méthode `main`. La classe dépend de `PiMonteCarlo`.  
 
 ### Assignment102 - PiMonteCarlo
 
@@ -334,6 +342,9 @@ On peut voir que ici l'erreur est équivalente à celle de Pi.java pour $10^8$ i
 
 ![Diagramme de classes](./assets/socket.jpg)
 **Figure 11** : Diagramme de classes de Suite
+
+On a la classe `MasterSocket` qui contient la méthode `main`. La classe dépend de `InputStreamReader` et `OutputStreamWriter`. La classe utilise `PrintWriter`, `BufferedReader` et `Socket`.  
+On a la classe `WorkerSocket` qui contient la méthode `main`. La classe dépend de `BufferReader`, `Socket`, `ServerSocket`, `PrintWriter` et de `Master` du package `TP4_Shared.Pi`.  
 
 #### MasterSocket
 
