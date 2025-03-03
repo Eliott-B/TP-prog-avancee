@@ -265,7 +265,7 @@ ${T_1 \simeq T_p}$
 ![Scalabilité faible](./assets/scalabilite_faible.png)
 **Figure 5** : Scalabilité faible
 
-La courbe verte reste proche de 1 en fonction du nombre de processus (un ordinateur avec 4 coeurs aura une cours de 1 jusque 4 et après ça redescend doucement).
+La courbe bleu reste proche de 1 en fonction du nombre de processus (un ordinateur avec 4 coeurs aura une cours de 1 jusque 4 et après ça redescend doucement).
 
 ### Sortie de programme
 
