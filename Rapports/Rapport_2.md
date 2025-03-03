@@ -213,6 +213,12 @@ On stocke les résultats obtenu dans une liste de `Future<Long>`. Cette liste es
 
 #### Strong scaling
 
+![Scalabilité forte](./assets/scalabilite_forte.png)
+**Figure 4** : Scalabilité forte  
+
+La scalabilité forte est le rapport entre le temps d'exécution sur un seul processus et le temps d'exécution sur plusieurs processus.  
+La courbe idéale est une droite à 45°. Notre courbe doit être le plus proche possible de cette droite. Elle finira par stagner à cause du nombre de coeurs de l'ordinateur.  
+
 ##### Calcul accélération de Pi
 
 | Processus | Nombre d'intérations |
@@ -257,7 +263,7 @@ ${T_1 \simeq T_p}$
 => ${S_p \simeq 1}$
 
 ![Scalabilité faible](./assets/scalabilite_faible.png)
-**Figure 4** : Scalabilité faible
+**Figure 5** : Scalabilité faible
 
 La courbe verte reste proche de 1 en fonction du nombre de processus (un ordinateur avec 4 coeurs aura une cours de 1 jusque 4 et après ça redescend doucement).
 
@@ -286,7 +292,7 @@ On demande le temps en milisecondes puisque nous utilisons Java et que la JVM ne
 #### Scalabilité forte Pi.java
 
 ![Speedup Pi](./assets/speedup_pi.png)
-**Figure 5** : Scalabilité forte de Pi.java
+**Figure 6** : Scalabilité forte de Pi.java
 
 On remarque qu'au dessus de 8 processeurs pour les courbes verte et bleu le speedup est moins important. Cela est normal puisque l'ordinateur n'a que 4 coeurs et 8 threads.  
 
@@ -297,7 +303,7 @@ Au fur et à mesure la coubre bleu et la courbe verte s'écartent de la courbe i
 #### Scalabilité faible Pi.java
 
 ![Weak speedup Pi](./assets/weak_speedup_pi.png)
-**Figure 6** : Scalabilité faible de Pi.java
+**Figure 7** : Scalabilité faible de Pi.java
 
 Pour la scalabilité faible de Pi.java, on peut voir que si on fixe le nombre d'itérations à 120 000 000 par processus, le speedup est proche de 1 jusque 8 processeurs. Ensuite il redescend.  
 C'est pareil avec 1 200 000 itérations par processus mais le speedup est plus bas pour les mêmes raisons que la scalabilité forte.  
@@ -307,7 +313,7 @@ On ne peut pas faire cette expérience avec 1 200 000 000 itérations par proces
 #### Scalabilité forte Assignment102.java
 
 ![Speedup Assignment102](./assets/speedup_assigment102.png)
-**Figure 7** : Scalabilité forte de Assignment102.java
+**Figure 8** : Scalabilité forte de Assignment102.java
 
 La scalabilité forte de Assignment102 est très mauvaise. On voit même qu'elle est presque pareil que la scalabilité faible de Pi.java. De plus, on voit que la courbe bleu est presque constante même au dessus des 8 processus. La courbe orange, elle, chute à 4 processus.  
 
@@ -329,21 +335,21 @@ Ici le calcul de l'erreur est pas très précis puisque l'algorithme de Monte Ca
 #### Erreur de Pi.java en scalabilité forte
 
 ![Erreur Pi](./assets/error_pi.png)
-**Figure 8** : Erreur de Pi.java en scalabilité forte
+**Figure 9** : Erreur de Pi.java en scalabilité forte
 
 On peut voir que l'erreur diminue à chaque fois que le nombre d'itérations augmente. Cela est normal puisque plus on a d'itérations plus on a d'expériences et donc plus les résultats sont précis.  
 
 #### Erreur de Pi.java en scalabilité faible
 
 ![Erreur Weak Pi](./assets/error_pi_weak.png)
-**Figure 9** : Erreur de Pi.java en scalabilité faible
+**Figure 10** : Erreur de Pi.java en scalabilité faible
 
 L'erreur en scalabilité faible est plus compliqué à analyser. Mais on peut voir ici que plus on a d'itérations plus l'erreur diminue.  
 
 #### Erreur de Assignment102.java en scalabilité forte
 
 ![Erreur Assignment102](./assets/error_assigment102.png)
-**Figure 10** : Erreur de Assignment102.java en scalabilité forte
+**Figure 11** : Erreur de Assignment102.java en scalabilité forte
 
 On peut voir que ici l'erreur est équivalente à celle de Pi.java pour $10^8$ itérations malgré le fait que la scalabilité est mauvaise. Cela montre que le code est correct mais que seulement la parallélisation n'est pas efficace.  
 
@@ -352,7 +358,7 @@ On peut voir que ici l'erreur est équivalente à celle de Pi.java pour $10^8$ i
 ### Analyse
 
 ![Diagramme de classes](./assets/socket.jpg)
-**Figure 11** : Diagramme de classes de Suite
+**Figure 12** : Diagramme de classes de Suite
 
 On a la classe `MasterSocket` qui contient la méthode `main`. La classe dépend de `InputStreamReader` et `OutputStreamWriter`. La classe utilise `PrintWriter`, `BufferedReader` et `Socket`.  
 On a la classe `WorkerSocket` qui contient la méthode `main`. La classe dépend de `BufferReader`, `Socket`, `ServerSocket`, `PrintWriter` et de `Master` du package `TP4_Shared.Pi`.  
@@ -493,23 +499,23 @@ if (args.length > 1)
 ### Speedup et erreur
 
 ![Scalabilité forte](./assets/speedup_master-worker.png)  
-**Figure 12** : Scalabilité forte de Master-Worker  
+**Figure 13** : Scalabilité forte de Master-Worker  
 
 La speedup de ce code est assez similaire à celle de Pi.java.  
 Cela est normal puisque une partie du code est la même. De plus, le principe de parallélisation est le même, il est seulement sur une mémoire distribuée. Ici, on a fait les tests sur une seule machine.  
 
 ![Scalabilité faible](./assets/weak_speedup_master-worker.png)
-**Figure 13** : Scalabilité faible de Master-Worker  
+**Figure 14** : Scalabilité faible de Master-Worker  
 
 De même pour la scalabilité faible, elle est similaire à celle de Pi.java.  
 
 ![Erreur](./assets/error_master-worker.png)
-**Figure 14** : Erreur de Master-Worker  
+**Figure 15** : Erreur de Master-Worker  
 
 L'erreur a tendance à diminuer un peu quand on augmente le nombre d'itérations. Ce qui nous rend plus précis.  
 
 ![Erreur Weak](./assets/error_weak_master-worker.png)
-**Figure 15** : Erreur de Master-Worker en scalabilité faible
+**Figure 16** : Erreur de Master-Worker en scalabilité faible
 
 L'erreur en scalabilité faible est plus compliqué à analyser. Ici on peut voir que les les erreurs sont assez basses au début des itérations mais qu'elles augmentent à la fin. Cela s'explique par le fait que ce code est un code à double parallélisation. Il n'est donc pas fait pour être utilisé sur une seule machine.  
 
