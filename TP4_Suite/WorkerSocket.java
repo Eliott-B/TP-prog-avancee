@@ -23,22 +23,22 @@ public class WorkerSocket {
         System.out.println("Server started on port " + port);
         Socket soc = s.accept();
 
-        if (args.length > 1)
-            numWorkers = Integer.parseInt(args[1]);
-
         // BufferedReader bRead for reading message from Master
         BufferedReader bRead = new BufferedReader(new InputStreamReader(soc.getInputStream()));
 
         // PrintWriter pWrite for writing message to Master
         PrintWriter pWrite = new PrintWriter(new BufferedWriter(new OutputStreamWriter(soc.getOutputStream())), true);
         String str;
+        String str2;
         while (isRunning) {
             str = bRead.readLine(); // read message from Master
+            str2 = bRead.readLine(); // read number of workers from Master
             if (!(str.equals("END"))) {
                 System.out.println("Server receives totalCount = " + str);
 
                 // compute
                 int totalCount = Integer.parseInt(str);
+                numWorkers = Integer.parseInt(str2);
                 long ncible = new Master().doRun(totalCount / numWorkers, numWorkers);
 
                 pWrite.println(ncible); // send number of points in quarter of disk
