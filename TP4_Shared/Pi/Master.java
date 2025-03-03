@@ -16,11 +16,11 @@ import java.util.concurrent.Future;
  * and aggregates the results.
  */
 public class Master {
-    public long doRun(long totalCount, int numWorkers) throws InterruptedException, ExecutionException, IOException {
+    public long doRun(int totalCount, int numWorkers) throws InterruptedException, ExecutionException, IOException {
         return doRun(totalCount, numWorkers, false, "");
     }
 
-    public long doRun(long totalCount, int numWorkers, boolean writeOutFile, String fileSubName)
+    public long doRun(int totalCount, int numWorkers, boolean writeOutFile, String fileSubName)
             throws InterruptedException, ExecutionException, IOException {
 
         long startTime = System.currentTimeMillis();

@@ -38,7 +38,7 @@ public class WorkerSocket {
                 System.out.println("Server receives totalCount = " + str);
 
                 // compute
-                long totalCount = Long.parseLong(str);
+                int totalCount = Integer.parseInt(str);
                 long ncible = new Master().doRun(totalCount / numWorkers, numWorkers);
 
                 pWrite.println(ncible); // send number of points in quarter of disk
