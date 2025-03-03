@@ -47,6 +47,11 @@
 
 ## Introduction
 
+Dans le cadre de l'informatique moderne, où les calculs sont de plus en plus complexes, il est nécessaire de paralléliser les programmes.  
+Nous allons étudier dans ce rapport la parallélisation à travers différents modèles et paradigmes de programmation en mémoire partagée et distribuée.  
+Afin de comparer les performances de ces différents modèles, nous allons nous baser sur le calcul de $\Pi$ par une méthode de Monte Carlo.  
+Nous allons également étudier la performance des mesures de ces programmes.  
+
 ## Calcul de $\Pi$ par une méthode de Monte Carlo (MC)
 
 ### I. Généralités
@@ -557,3 +562,10 @@ J'ai donc décidé de paralléliser la boucle. J'ai utilisé la librairie `Syste
 J'ai plusieurs ressources critiques mais je n'utilise pas les mêmes méthodes pour les sécuriser. Pour la plus part des ressources critiques, j'ai utilisé des `lock` mais pour le système de journaux d'activités j'ai utilisé une `BlockingCollection` qui est une file d'attente. J'écrivais donc les journaux d'activités après l'exécution de toutes les itérations grâce à la `BlockingCollection`.  
 
 ## Conclusion
+
+Nous avons pu voir dans un premier temps la parallélisation en mémoire partagée du calcul de $\Pi$ par la méthode de Monte Carlo. Nous avons pu calculer la scalabilité forte et faible de ce code ainsi que l'erreur de calcul de $\Pi$.  
+Dans un deuxième temps, nous avons vu la parallélisation en mémoire distribuée. Nous avons aussi mis en place une parallélisation à 2 niveaux.  
+
+La parallélisation est un concept très important qui nous permet de gagner du temps de calcul. Il est même indispensable dans le monde du calcul à haute performance. Pour mettre en place ce concept, il faut bien au préalable analyser le code et voir les ressources critiques.  
+Il est aussi important de bien choisir le modèle de parallélisation. Tous les modèles ne sont pas adaptés à tous les problèmes.  
+De plus, il est important de bien analyser les performances de nos programmes. Cela nous permet de voir si notre parallélisation est efficace ou non.  
