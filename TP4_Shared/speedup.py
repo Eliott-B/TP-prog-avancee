@@ -164,7 +164,7 @@ def calculate_speedup(resultsPi: dict) -> plt:
             avg_speedups,
             marker="o",
             linestyle="-",
-            label="Speedup " + str(total),
+            label=f"Speedup $10^{{{int(np.log10(total))}}}$",
         )
 
     plt.xlabel("Processors")
@@ -218,7 +218,7 @@ def calculate_weak_speedup(resultsPi: dict) -> plt:
             avg_speedups,
             marker="o",
             linestyle="-",
-            label="Speedup " + str(total),
+            label=f"Speedup $10^{{{int(np.log10(total))}}}$",
         )
 
     plt.xlabel("Processors")
@@ -258,7 +258,7 @@ def draw_error(resultsPi: dict) -> plt:
             iterations,
             errors,
             alpha=0.5,
-            label=f"Error p={total}",
+            label=f"Error p=$10^{{{int(np.log10(total))}}}$",
         )
 
     plt.xlabel("Number of iterations")
