@@ -38,6 +38,7 @@
   - [Socket](#socket)
   - [Réutilisation de Pi](#réutilisation-de-pi)
   - [Automatisation de MasterSocket et WorkerSocket](#automatisation-de-mastersocket-et-workersocket)
+  - [Speedup et erreur](#speedup-et-erreur)
   - [Utilisation de `MasterSocket` et `WorkerSocket` sur plusieurs machines](#utilisation-de-mastersocket-et-workersocket-sur-plusieurs-machines)
 - [Performance des mesures](#performance-des-mesures)
   - [Efficacité du temps de processus](#efficacité-du-temps-de-processus)
@@ -160,6 +161,9 @@ calculer pi (3)
 ```
 
 ## Shared
+
+Le code `Pi.java` a été écrit par Dr. Steve Kautz.  
+Le code `Assignment102.java` a été écrit par Karthik Jain.  
 
 ### Conception
 
@@ -329,6 +333,8 @@ On peut voir que l'erreur diminue à chaque fois que le nombre d'itérations aug
 ![Erreur Weak Pi](./assets/error_pi_weak.png)
 **Figure 9** : Erreur de Pi.java en scalabilité faible
 
+L'erreur en scalabilité faible est plus compliqué à analyser. Mais on peut voir ici que plus on a d'itérations plus l'erreur diminue.  
+
 #### Erreur de Assignment102.java en scalabilité forte
 
 ![Erreur Assignment102](./assets/error_assigment102.png)
@@ -478,6 +484,29 @@ totalCount = Integer.parseInt(args[0]);
 if (args.length > 1)
   numWorkers = Integer.parseInt(args[1]);
 ```
+
+### Speedup et erreur
+
+![Scalabilité forte](./assets/speedup_master-worker.png)  
+**Figure 12** : Scalabilité forte de Master-Worker  
+
+La speedup de ce code est assez similaire à celle de Pi.java.  
+Cela est normal puisque une partie du code est la même. De plus, le principe de parallélisation est le même, il est seulement sur une mémoire distribuée. Ici, on a fait les tests sur une seule machine.  
+
+![Scalabilité faible](./assets/weak_speedup_master-worker.png)
+**Figure 13** : Scalabilité faible de Master-Worker  
+
+De même pour la scalabilité faible, elle est similaire à celle de Pi.java.  
+
+![Erreur](./assets/error_master-worker.png)
+**Figure 14** : Erreur de Master-Worker  
+
+L'erreur a tendance à diminuer un peu quand on augmente le nombre d'itérations. Ce qui nous rend plus précis.  
+
+![Erreur Weak](./assets/error_weak_master-worker.png)
+**Figure 15** : Erreur de Master-Worker en scalabilité faible
+
+L'erreur en scalabilité faible est plus compliqué à analyser. Ici on peut voir que les les erreurs sont assez basses au début des itérations mais qu'elles augmentent à la fin. Cela s'explique par le fait que ce code est un code à double parallélisation. Il n'est donc pas fait pour être utilisé sur une seule machine.  
 
 ### Utilisation de `MasterSocket` et `WorkerSocket` sur plusieurs machines
 

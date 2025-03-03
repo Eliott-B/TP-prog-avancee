@@ -146,6 +146,60 @@ def calculate_speedup(resultsPi):
     return plt
 
 
+def calculate_weak_speedup(resultsPi: dict) -> plt:
+    """Calculate weak scaling efficiency and plot it
+
+    Args:
+        resultsPi (dict): Results of the Pi simulation
+
+    Returns:
+        plt: Matplotlib plot
+    """
+    plt.figure(figsize=(12, 6))
+    plt.plot([1, 12], [1, 1], "r--", label="Perfect Efficiency")
+
+    for total in resultsPi.keys():
+        processor_groups = {}
+        for result in resultsPi[total]:
+            if result.processors not in processor_groups:
+                processor_groups[result.processors] = []
+            processor_groups[result.processors].append(result)
+
+        processors = sorted(processor_groups.keys())
+        avg_speedups = []
+
+        T1_results = processor_groups[1]
+        T1 = sum(r.time for r in T1_results) / len(T1_results)
+
+        for p in processors:
+            results = processor_groups[p]
+            Tp = sum(r.time for r in results) / len(results)
+            speedup = T1 / Tp
+            avg_speedups.append(speedup)
+
+        plt.plot(
+            processors,
+            avg_speedups,
+            marker="o",
+            linestyle="-",
+            label=f"Speedup $10^{{{int(np.log10(total))}}}$",
+        )
+
+    plt.xlabel("Processors")
+    plt.ylabel("Sp")
+    plt.title("Weak Scaling Efficiency")
+    plt.legend()
+
+    plt.yticks(range(0, 7))
+    plt.xticks(range(0, 13))
+
+    plt.axis("equal")
+    plt.axis([0, 12.5, 0, 6.5])
+
+    plt.grid(True)
+    return plt
+
+
 def draw_error(resultsPi: dict) -> plt:
     """Draw error distribution by number of iterations
 
@@ -240,13 +294,12 @@ if __name__ == "__main__":
         resultsPiW[total] = read_file(file)
 
     PltPi = calculate_speedup(resultsPi)
-    PltPiW = calculate_speedup(resultsPiW)
-    PltErr = draw_error(resultsPi)
-    PltErrW = draw_error(resultsPiW)
-
     PltPi.savefig("TP4_Suite\\data\\speedup.png")
+    PltPiW = calculate_weak_speedup(resultsPiW)
     PltPiW.savefig("TP4_Suite\\data\\weak_speedup.png")
+    PltErr = draw_error(resultsPi)
     PltErr.savefig("TP4_Suite\\data\\error.png")
+    PltErrW = draw_error(resultsPiW)
     PltErrW.savefig("TP4_Suite\\data\\error_weak.png")
 
     PltPi.show()
