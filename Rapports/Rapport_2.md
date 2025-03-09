@@ -40,6 +40,8 @@
   - [Automatisation de MasterSocket et WorkerSocket](#automatisation-de-mastersocket-et-workersocket)
   - [Speedup et erreur](#speedup-et-erreur)
   - [Utilisation de `MasterSocket` et `WorkerSocket` sur plusieurs machines](#utilisation-de-mastersocket-et-workersocket-sur-plusieurs-machines)
+    - [Résultats en scalabilité faible](#résultats-en-scalabilité-faible)
+    - [Résultats en scalabilité forte](#résultats-en-scalabilité-forte)
 - [Performance des mesures](#performance-des-mesures)
   - [Efficacité du temps de processus](#efficacité-du-temps-de-processus)
 - [Travail en entreprise](#travail-en-entreprise)
@@ -528,15 +530,87 @@ Etapes à suivre pour utiliser `MasterSocket` et `WorkerSocket` sur plusieurs ma
 
 1. Cloner le projet sur chaque machine  
 2. Installer Java sur chaque machine (:warning: le JDK)  
+
+```bash
+yum install java-devel
+```
+
 3. Désactiver le firewall de chaque machine  
-4. Changer l'adresse IP dans `MasterSocket` par l'adresse IP de la machine Worker  
+
+```bash
+systemctl stop firewalld
+```
+
+4. Changer l'adresse IP dans `MasterSocket` par l'adresse IP de la machine Worker ou remplacer par une liste d'adresse IP et modifier le code pour qu'il envoie à chaque adresse IP.  
+5. Compiler les codes java sur chaque machine  
+
+*Workers :*  
+
+```bash
+javac TP4_Shared/Pi/Worker.java
+javac TP4_Shared/Pi/Master.java
+javac TP4_Suite/WorkerSocket.java
+```
+
+*Master :*  
+
+```bash
+javac TP4_Suite/MasterSocket.java
+```
 
 Ensuite il suffit seulement de lancer dans l'ordre :
 
 1. `WorkerSocket` sur chaque machine  
+
+```bash
+java TP4_Suite/WorkerSocket.java <port>
+```
+
 2. `MasterSocket` sur la machine Master  
 
+```bash
+java TP4_Suite/MasterSocket.java <nombre d'itérations> <nombre de workers>
+```
 
+#### Résultats en scalabilité faible
+
+| Nombre de machines | Nombre total de workers | Nombre d'ittérations  | Temps d'exécution (s) | Erreur                              |
+| ------------------ | ----------------------- | --------------------- | --------------------- | ----------------------------------- |
+| 1                  | 1                       | $2 \times 10^9$       | 68,974                | $2.3575172837409821 \times 10^{-5}$ |
+| 1                  | 2                       | $4 \times 10^9$       | 69,189                | $1.0177846524687415 \times 10^{-5}$ |
+| 1                  | 4                       | $8 \times 10^9$       | 70,436                | $1.0747921043959614 \times 10^{-5}$ |
+| 2                  | 8                       | $1.6 \times 10^{10}$  | 70,450                | $4.6105085509244952 \times 10^{-6}$ |
+| 4                  | 16                      | $3.2 \times 10^{10}$  | 71,908                | $2.8263219557848443 \times 10^{-6}$ |
+| 8                  | 32                      | $6.4 \times 10^{10}$  | 70,484                | $1.2763940615949628 \times 10^{-6}$ |
+| 16                 | 64                      | $1.28 \times 10^{11}$ | 70,890                | $1.3741649324992772 \times 10^{-6}$ |
+
+![Scalabilité faible sur plusieurs machines](./assets/weak_speedup_distribuee.png)
+**Figure 17** : Scalabilité faible sur plusieurs machines  
+
+On peut voir que la scalabilité faible est meilleure que sur une seule machine. Cela est normal puisque la charge est répartie sur plusieurs machines (16 machines pour 64 workers).  
+
+![Erreur en scalabilité faible sur plusieurs machines](./assets/error_weak_distribuee.png)
+**Figure 18** : Erreur en scalabilité faible sur plusieurs machines  
+
+Comme pour la scalabilité faible, les erreurs sont plus basses que sur une seule machine. Cela est normal puisque la charge est répartie sur plusieurs machines.
+
+#### Résultats en scalabilité forte
+
+| Nombre de machines | Nombre total de workers | Nombre d'ittérations | Temps d'exécution (s) | Erreur                             |
+| ------------------ | ----------------------- | -------------------- | --------------------- | ---------------------------------- |
+| 1                  | 1                       | $6.4 \times 10^{10}$ | 68,607                | $2.88783786 \times 10^{-6}$        |
+| 8                  | 32                      | $6.4 \times 10^{10}$ | 71,908                | $1.01778 \times 10^{-6}$           |
+| 16                 | 64                      | $6.4 \times 10^{10}$ | 46,048                | $1.074792104395961 \times 10^{-6}$ |
+
+![Scalabilité forte sur plusieurs machines](./assets/speedup_distribuee.png)
+**Figure 19** : Scalabilité forte sur plusieurs machines  
+
+La scalabilité forte sur plusieurs machines est mauvaise. Cela s'explique par le fait que nous n'avons pas fait assez d'expériences. En effet, nous avons fait seulement 3 expériences et pour chaque expériences nous avons fait qu'un seul essai.  
+
+![Erreur en scalabilité forte sur plusieurs machines](./assets/error_distribuee.png)
+**Figure 20** : Erreur en scalabilité forte sur plusieurs machines  
+
+L'erreur en scalabilité forte est plus haute qu'en scalabilité faible. Cela s'explique pour les mêmes raisons que la scalabilité forte.
 
 ## Performance des mesures
 
