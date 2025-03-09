@@ -44,6 +44,7 @@
   - [Efficacité du temps de processus](#efficacité-du-temps-de-processus)
 - [Travail en entreprise](#travail-en-entreprise)
 - [Conclusion](#conclusion)
+- [Crédits](#crédits)
 
 ## Introduction
 
@@ -535,6 +536,8 @@ Ensuite il suffit seulement de lancer dans l'ordre :
 1. `WorkerSocket` sur chaque machine  
 2. `MasterSocket` sur la machine Master  
 
+
+
 ## Performance des mesures
 
 La mesure de la performance du code est décrite par la **norme ISO/IEC 25022**.  
@@ -575,3 +578,9 @@ Dans un deuxième temps, nous avons vu la parallélisation en mémoire distribu�
 La parallélisation est un concept très important qui nous permet de gagner du temps de calcul. Il est même indispensable dans le monde du calcul à haute performance. Pour mettre en place ce concept, il faut bien au préalable analyser le code et voir les ressources critiques.  
 Il est aussi important de bien choisir le modèle de parallélisation. Tous les modèles ne sont pas adaptés à tous les problèmes.  
 De plus, il est important de bien analyser les performances de nos programmes. Cela nous permet de voir si notre parallélisation est efficace ou non.  
+
+## Crédits
+
+- Cours de M. Thomas Dufaud  
+- Code de Karthik Jain (Assignment102.java)  
+- Code de Dr. Steve Kautz (Pi.java)  
